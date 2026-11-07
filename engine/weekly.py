@@ -151,7 +151,7 @@ def actions_minutes(start, end):
                              capture_output=True, text=True, timeout=120)
         if out.returncode != 0:
             return {"ok": False, "error": out.stderr.strip()[:200]}
-        tot, n, fail, by = 0.0, 0, 0, {}
+        tot, n, fail, canc, by = 0.0, 0, 0, 0, {}
         for line in out.stdout.strip().splitlines():
             name, concl, a, b = (line.split("\t") + ["", "", "", ""])[:4]
             if not a or not b:
@@ -159,14 +159,37 @@ def actions_minutes(start, end):
             m = max(0.0, (ts(b) - ts(a)).total_seconds() / 60)
             if ts(a) > end:
                 continue
-            tot += m; n += 1; fail += concl not in ("success", "skipped", "")
+            tot += m; n += 1
+            if concl == "cancelled":
+                canc += 1   # 取り消し（順番待ちの自動取り消し・手動停止）は失敗と分けて数える
+            elif concl not in ("success", "skipped", "neutral", ""):
+                fail += 1
             by[name] = by.get(name, 0) + m
         pub = subprocess.run(["gh", "api", "repos/" + REPO, "--jq", ".private"], capture_output=True, text=True, timeout=60).stdout.strip()
-        return {"ok": True, "minutes": round(tot, 1), "runs": n, "failed_runs": fail, "by_workflow": {k: round(v, 1) for k, v in by.items()},
+        return {"ok": True, "minutes": round(tot, 1), "runs": n, "failed_runs": fail, "cancelled_runs": canc, "by_workflow": {k: round(v, 1) for k, v in by.items()},
                 "private": pub == "true", "ratio_free_private_monthly": round(tot * 4.3 / FREE_MIN_PRIVATE, 3),
                 "note": "公開リポジトリは無料で上限なし。参考として非公開の無料枠（月2,000分）に対する1ヶ月換算の割合も出す。分数は実行の開始〜終了の時間の合計（課金の分数とは丸め方が違う）"}
     except Exception as e:
         return {"ok": False, "error": str(e)[:200]}
+
+
+def gcp_cost(start, end):
+    """Google Cloud の費用（🗄️データ基盤の gcp-cost が保存する data/raw/ops/gcp_cost.csv）。届いていなければ理由を返す。"""
+    st = {}
+    try:
+        st = json.load(open(P("data/raw/ops/gcp_cost_status.json")))
+    except Exception:
+        pass
+    rows = read_csv("data/raw/ops/gcp_cost.csv")
+    if not rows:
+        return {"ok": False, "week": None, "month": None, "note": "未取得：" + (st.get("note") or "費用のファイルがまだない")[:120]}
+    d0, d1 = start.date().isoformat(), end.date().isoformat()
+    month = end.strftime("%Y-%m")
+    wk = sum(float(r["net"]) for r in rows if d0 <= r["date_jst"] <= d1)
+    mtd = sum(float(r["net"]) for r in rows if r["date_jst"].startswith(month))
+    cur = rows[-1].get("currency", "")
+    return {"ok": True, "week": wk, "month": mtd, "currency": cur, "last_date": max(r["date_jst"] for r in rows),
+            "note": "クレジット差し引き後の金額。最新の日付 %s（請求データは1日ほど遅れて届く）" % max(r["date_jst"] for r in rows)}
 
 
 def keys_due(now):
@@ -277,6 +300,7 @@ def main():
     ops = operations(recs, start, now)
     gaps = data_gaps(recs, start, now)
     act = actions_minutes(start, now)
+    gcp = gcp_cost(start, now)
     keys = keys_due(now)
     ch = changes(recs, start, now)
     nw = next_week(recs, now)
@@ -299,7 +323,7 @@ def main():
         issues.append(("GitHub Actionsの使用分数を取得できず", "🧭 司令塔", "「週次の振り返りで Actions の分数が取れません。確認して」"))
 
     rep = {"week": wid, "at": now.isoformat(), "period": [start.isoformat(), now.isoformat()], "score": sc, "operations": ops, "data": gaps,
-           "cost": {"gcp": {"value": None, "note": "未取得：Google Cloudの金額を読む仕組みがまだない（データ基盤チャットに依頼）。それまでは予算アラートのメールと請求レポートで確認"},
+           "cost": {"gcp": gcp,
                     "actions": act, "claude": {"note": "定時実行は1日2回＋週1回。利用の上限に当たった回は「稼働」の止まった回に出る"}},
            "changes": ch, "next_week": nw, "improvements": imp, "keys": keys,
            "issues": [{"what": i[0], "chat": i[1], "ask": i[2]} for i in issues]}
@@ -319,9 +343,9 @@ def main():
     M += ["## データの欠け", "", "| 取得先 | 実行回数 | 成功 | 成功率 |", "| --- | --- | --- | --- |"] + ["| %s | %d | %d | %s |" % (s["source"], s["runs"], s["ok"], pc(s["rate"])) for s in gaps["fetch"]]
     M += ["", "- 代わりの取得先を使った回数（予想%d回中）：円価格 %d回・ドル価格 %d回" % (gaps["fallback"]["records"], gaps["fallback"]["XRP円価格"], gaps["fallback"]["XRPドル価格"]),
           "- 空欄の項目：" + "、".join(gaps["blank_items"]), ""]
-    M += ["## 費用", "", "- Google Cloud：" + rep["cost"]["gcp"]["note"]]
+    M += ["## 費用", "", ("- Google Cloud：今週 %.2f %s・今月 %.2f %s（%s）" % (gcp["week"], gcp["currency"], gcp["month"], gcp["currency"], gcp["note"])) if gcp["ok"] else "- Google Cloud：" + gcp["note"] + "（それまでは予算アラートのメールで確認）"]
     if act.get("ok"):
-        M.append("- GitHub Actions：%.0f分（%d回、失敗%d回）。%s。非公開だった場合の無料枠に対する1ヶ月換算：%s" % (act["minutes"], act["runs"], act["failed_runs"], "公開リポジトリのため無料・上限なし" if not act["private"] else "非公開リポジトリ", pc(act["ratio_free_private_monthly"])))
+        M.append("- GitHub Actions：%.0f分（%d回、失敗%d回・取り消し%d回）。%s。非公開だった場合の無料枠に対する1ヶ月換算：%s" % (act["minutes"], act["runs"], act["failed_runs"], act.get("cancelled_runs", 0), "公開リポジトリのため無料・上限なし" if not act["private"] else "非公開リポジトリ", pc(act["ratio_free_private_monthly"])))
     else:
         M.append("- GitHub Actions：取得できず（%s）" % act.get("error"))
     M += ["", "## 予想の変化", ""]
@@ -341,7 +365,7 @@ def main():
     doc = r5({"week": wid, "at": now.isoformat(), "period": rep["period"], "issues": rep["issues"],
               "score": {"week": w, "all": al}, "operations": {k: ops[k] for k in ("planned", "done", "missed")},
               "data": {"fetch": [{k: s[k] for k in ("source", "runs", "ok", "rate")} for s in gaps["fetch"]], "fallback": gaps["fallback"], "blank_items": gaps["blank_items"]},
-              "cost": {"gcp": None, "actions_minutes": act.get("minutes"), "actions_runs": act.get("runs"), "actions_failed": act.get("failed_runs"), "private": act.get("private")},
+              "cost": {"gcp": gcp.get("week") if gcp["ok"] else None, "gcp_month": gcp.get("month"), "gcp_currency": gcp.get("currency"), "gcp_note": gcp["note"], "actions_minutes": act.get("minutes"), "actions_runs": act.get("runs"), "actions_failed": act.get("failed_runs"), "actions_cancelled": act.get("cancelled_runs"), "private": act.get("private")},
               "changes": ch, "next_week": nw, "improvements": imp, "keys": keys.get("items", []), "file": "reports/weekly/%s.md" % wid})
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
     json.dump([{"op": "set", "path": "weekly/" + wid, "data": doc}], open(os.path.join(HERE, "out", "weekly_ops.json"), "w"), ensure_ascii=False, separators=(",", ":"))
