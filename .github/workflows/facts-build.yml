@@ -14,8 +14,11 @@ on:
 permissions:
   contents: write
 
+# 取得（fetch）とは別の列にする。同じ列だと、毎時の取得が後から来たときに
+# 順番待ちのこの実行が自動で取り消されることがある（2026-11-07 に発生）。
+# 書き込むのは facts/ だけなので、取得と同時に動いても保存はぶつからない。
 concurrency:
-  group: fetch
+  group: facts
   cancel-in-progress: false
 
 jobs:

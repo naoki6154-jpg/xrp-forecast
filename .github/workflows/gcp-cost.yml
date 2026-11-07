@@ -1,0 +1,52 @@
+# Google Cloud の費用の取得（設計書 16-2・16-3）。毎日 09:20 JST。
+# 段階1の定時更新とは別のワークフロー・別の列。失敗しても他の取得は止まらない。
+# 鍵（JSONの鍵ファイル）は使わず、GitHub と Google Cloud の連携（Workload Identity）で
+# 読むだけの係 gcp-cost-reader として BigQuery の請求データを読む。
+name: gcp-cost
+
+on:
+  schedule:
+    - cron: "20 0 * * *"   # 09:20 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write   # Google Cloud との連携に使う一時的な身分証明（OIDC）
+
+concurrency:
+  group: gcp-cost
+  cancel-in-progress: false
+
+jobs:
+  cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Google Cloud に読むだけの係としてつなぐ
+        id: auth
+        continue-on-error: true   # 連携の設定前でも失敗にしない（状況ファイルに「未設定」と書く）
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/777720829424/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: gcp-cost-reader@xrp-forecast.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+        if: steps.auth.outcome == 'success'
+
+      - name: 費用を取得
+        run: python3 fetchers/gcp_cost.py
+
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/ops
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "ops: Google Cloud の費用 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
