@@ -26,6 +26,7 @@ FACTS = os.path.join(ROOT, "facts")
 ET = ZoneInfo("America/New_York")
 JST = ZoneInfo("Asia/Tokyo")
 START = date(2016, 1, 1)
+RECOMPUTE_DAYS = int(os.environ.get("FACTS_RECOMPUTE_DAYS", "460"))  # 直近の分は毎回計算し直す（後から直した計算方法を反映するため）
 MAX_SECONDS = int(os.environ.get("FACTS_MAX_SECONDS", "1200"))  # 1回の実行の上限。残りは次の回に続ける
 API = "https://api.stlouisfed.org/fred"
 
@@ -74,19 +75,35 @@ def vintage(series, d, key):
     return [(o["date"], float(o["value"])) for o in j["observations"] if o["value"] != "."]
 
 
+def _shift(ym, months):
+    y, m = int(ym[:4]), int(ym[5:7])
+    m += months
+    while m <= 0:
+        y, m = y - 1, m + 12
+    while m > 12:
+        y, m = y + 1, m - 12
+    return f"{y:04d}-{m:02d}"
+
+
 def calc(obs, how, idx):
-    """obs の idx 番目（-1=最新、-2=前月）の値を計算する"""
-    try:
-        if how == "level":
-            return obs[idx][1]
-        if how == "diff":
-            return obs[idx][1] - obs[idx - 1][1]
-        if how == "mom":
-            return (obs[idx][1] / obs[idx - 1][1] - 1) * 100
-        if how == "yoy":
-            return (obs[idx][1] / obs[idx - 12][1] - 1) * 100
-    except (IndexError, ZeroDivisionError):
+    """obs の idx 番目（-1=最新、-2=その1ヶ月前）の月の値を計算する。
+    前月・前年同月は「日付」で探す（公表されなかった月があっても、ずれないように。例：2025年10月のCPI）。
+    比べる月の値がなければ空欄。"""
+    if not obs:
         return None
+    by = {d[:7]: v for d, v in obs}
+    ym = _shift(obs[-1][0][:7], idx + 1)
+    cur = by.get(ym)
+    if cur is None:
+        return None
+    if how == "level":
+        return cur
+    base = by.get(_shift(ym, -12 if how == "yoy" else -1))
+    if base is None:
+        return None
+    if how == "diff":
+        return cur - base
+    return (cur / base - 1) * 100
 
 
 def fmt(v, how):
@@ -104,6 +121,10 @@ def main():
     if os.path.exists(ev_path):
         with open(ev_path, newline="", encoding="utf-8") as f:
             for r in csv.DictReader(f):
+                if r["category"] != "経済指標":
+                    continue
+                if date.fromisoformat(r["date_et"]) >= date.today() - timedelta(days=RECOMPUTE_DAYS):
+                    continue  # 計算し直す対象
                 have.add(r["event_id"])
                 refs_seen.add((r["subcategory"], r["reference_period"]))
     today = datetime.now(timezone.utc).date()
