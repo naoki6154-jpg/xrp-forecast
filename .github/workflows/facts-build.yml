@@ -1,0 +1,49 @@
+# 過去事実データベースの更新（設計書 3-3）。毎朝 07:45 JST（朝の取得の後）と、facts/ の変更時・手動で実行。
+name: facts-build
+
+on:
+  schedule:
+    - cron: "45 22 * * *"   # 07:45 JST
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "facts/*.py"
+      - ".github/workflows/facts-build.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 経済指標（CPI・雇用統計・PCE）
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python3 facts/build_macro.py
+      - name: FOMC
+        run: python3 facts/build_fomc.py
+      - name: その後の値動き
+        run: python3 facts/build_reactions.py
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add facts
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "facts: 過去事実データベースを更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1

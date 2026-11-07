@@ -113,6 +113,98 @@ def binance_vision_daily():
                 note=", ".join(f"{k}:{v[0]}行" for k, v in summary.items()))
 
 
+def _months(start_y, start_m, today):
+    y, m = start_y, start_m
+    while (y, m) < (today.year, today.month):
+        yield y, m
+        m += 1
+        if m == 13:
+            y, m = y + 1, 1
+
+
+def binance_vision_1h():
+    """XRP・BTC の1時間足（2018年〜）。出来事の直後（1時間後）の値動きの計算に使う。"""
+    fetched_at = now_utc_iso()
+    today = datetime.now(timezone.utc).date()
+    last_month = today.replace(day=1) - timedelta(days=1)
+    base = "https://data.binance.vision/data/spot"
+    fields = ["time", "open", "high", "low", "close", "volume", "source", "fetched_at"]
+    summary = {}
+    for sym in ["XRP", "BTC"]:
+        pair = f"{sym}USDT"
+        path = os.path.join(RAW, "prices", f"binance_{sym.lower()}_usdt_1h.csv")
+        have_months = {t[:7] for t in read_csv_keys(path, "time")}
+        have = read_csv_keys(path, "time")
+        rows = []
+        for y, m in _months(2018, 1, today):
+            ym = f"{y:04d}-{m:02d}"
+            if ym in have_months and (y, m) != (last_month.year, last_month.month):
+                continue
+            try:
+                blob = http_get(f"{base}/monthly/klines/{pair}/1h/{pair}-1h-{ym}.zip", as_json=False)
+            except Exception:  # noqa: BLE001
+                continue
+            rows += _binance_1h_rows(unzip_single_csv(blob), f"data.binance.vision monthly {pair} 1h", fetched_at)
+        d = today.replace(day=1)
+        while d < today:
+            if f"{d.isoformat()}T23:00:00Z" not in have:
+                try:
+                    blob = http_get(f"{base}/daily/klines/{pair}/1h/{pair}-1h-{d.isoformat()}.zip", as_json=False)
+                    rows += _binance_1h_rows(unzip_single_csv(blob), f"data.binance.vision daily {pair} 1h", fetched_at)
+                except Exception:  # noqa: BLE001
+                    pass
+            d += timedelta(days=1)
+        total, added = merge_csv(path, rows, ["time"], fields)
+        summary[sym] = (total, added, last_value(path, "time"))
+    return dict(rows=sum(v[0] for v in summary.values()), added=sum(v[1] for v in summary.values()),
+                last=min(v[2] for v in summary.values())[:10],
+                note=", ".join(f"{k}:{v[0]}行" for k, v in summary.items()))
+
+
+def _binance_1h_rows(text, source, fetched_at):
+    rows = []
+    for r in csv.reader(io.StringIO(text)):
+        if not r or not r[0].isdigit():
+            continue
+        rows.append(dict(time=ms_to_iso(r[0]), open=r[1], high=r[2], low=r[3], close=r[4], volume=r[5],
+                         source=source, fetched_at=fetched_at))
+    return rows
+
+
+def binance_funding_hist():
+    """Binance 先物の資金調達率の全履歴（公式一括データ、2020年〜。前月分まで）。"""
+    fetched_at = now_utc_iso()
+    today = datetime.now(timezone.utc).date()
+    last_month = today.replace(day=1) - timedelta(days=1)
+    base = "https://data.binance.vision/data/futures/um/monthly/fundingRate"
+    fields = ["time", "funding_interval_hours", "funding_rate", "source", "fetched_at"]
+    summary = {}
+    for sym in ["XRP", "BTC"]:
+        pair = f"{sym}USDT"
+        path = os.path.join(RAW, "derivatives", f"binance_funding_{sym.lower()}.csv")
+        have_months = {t[:7] for t in read_csv_keys(path, "time")}
+        rows = []
+        for y, m in _months(2019, 9, today):
+            ym = f"{y:04d}-{m:02d}"
+            if ym in have_months and (y, m) != (last_month.year, last_month.month):
+                continue
+            try:
+                blob = http_get(f"{base}/{pair}/{pair}-fundingRate-{ym}.zip", as_json=False)
+            except Exception:  # noqa: BLE001
+                continue
+            for r in csv.reader(io.StringIO(unzip_single_csv(blob))):
+                if not r or not r[0].isdigit():
+                    continue
+                rows.append(dict(time=ms_to_iso(r[0]), funding_interval_hours=r[1], funding_rate=r[2],
+                                 source=f"data.binance.vision futures/um monthly fundingRate {pair}",
+                                 fetched_at=fetched_at))
+        total, added = merge_csv(path, rows, ["time"], fields)
+        summary[sym] = (total, added, last_value(path, "time"))
+    return dict(rows=sum(v[0] for v in summary.values()), added=sum(v[1] for v in summary.values()),
+                last=min(v[2] for v in summary.values())[:10] if all(v[2] for v in summary.values()) else "",
+                note=", ".join(f"{k}:{v[0]}行" for k, v in summary.items()))
+
+
 def _binance_rows(text, source, fetched_at):
     rows = []
     for r in csv.reader(io.StringIO(text)):
@@ -198,6 +290,7 @@ FRED_SERIES = {
     "UNRATE": "失業率",
     "DFF": "FF金利（実効、日次）",
     "DFEDTARU": "FF金利の誘導目標（上限）",
+    "DFEDTARL": "FF金利の誘導目標（下限）",
     "DGS2": "米国債2年利回り",
     "DGS10": "米国債10年利回り",
     "T10YIE": "10年期待インフレ率",
@@ -352,6 +445,8 @@ ALL = {
     "bitbank": bitbank_daily,
     "kraken": kraken_daily,
     "binance_vision": binance_vision_daily,
+    "binance_vision_1h": binance_vision_1h,
+    "binance_funding_hist": binance_funding_hist,
     "fear_greed": fear_greed,
     "okx": okx_derivatives,
     "fred": fred,
