@@ -27,6 +27,13 @@ FIRST_YEAR = 2016
 MONTHS = {m: i for i, m in enumerate(["January", "February", "March", "April", "May", "June", "July", "August",
                                       "September", "October", "November", "December"], 1)}
 MON_RE = "|".join(MONTHS)
+MON_ANY = r"(?:January|February|March|April|May|June|July|August|September|October|November|December|" \
+          r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?"
+DASH = r"\s*[-\u2013\u2014]\s*"
+
+
+def mon(name):
+    return MONTHS[next(m for m in MONTHS if m.startswith(name.rstrip(".")[:3]))]
 
 
 def fetch_text(url):
@@ -51,12 +58,12 @@ def parse_calendars(txt):
             year = int(m.group(1))
             i += 1
             continue
-        mm = re.match(rf"^({MON_RE})(?:/({MON_RE}))?$", lines[i])
+        mm = re.match(rf"^({MON_ANY})(?:\s*/\s*({MON_ANY}))?$", lines[i])
         if year and mm and i + 1 < len(lines):
-            dm = re.match(r"^(\d{1,2})(?:-(\d{1,2}))?(\*)?\s*(\(.*\))?$", lines[i + 1])
+            dm = re.match(rf"^(\d{{1,2}})(?:{DASH}(\d{{1,2}}))?(\*)?\s*(\(.*\))?$", lines[i + 1])
             if dm:
-                m1 = MONTHS[mm.group(1)]
-                m2 = MONTHS[mm.group(2)] if mm.group(2) else m1
+                m1 = mon(mm.group(1))
+                m2 = mon(mm.group(2)) if mm.group(2) else m1
                 d1 = int(dm.group(1))
                 d2 = int(dm.group(2)) if dm.group(2) else d1
                 note = (dm.group(4) or "").strip("() ").lower()
@@ -73,18 +80,24 @@ def parse_calendars(txt):
 def parse_historical(txt, year):
     """fomchistoricalYYYY.htm：『January 30-31 Meeting - 2018』『April 30-May 1 Meeting - 2019』など"""
     out = []
-    pat = re.compile(rf"({MON_RE}) (\d{{1,2}})(?:-(?:({MON_RE}) )?(\d{{1,2}}))? "
-                     rf"(Meeting|Conference Call|Unscheduled Meeting)\s*-\s*(\d{{4}})")
+    pat = re.compile(rf"({MON_ANY}) (\d{{1,2}})(?:{DASH}(?:({MON_ANY}) )?(\d{{1,2}}))?"
+                     rf"\s*(\([^)]*\))?\s*(Meeting|Conference Call|Unscheduled Meeting)?\s*-\s*(\d{{4}})")
     for m in pat.finditer(txt):
-        if int(m.group(6)) != year:
+        if int(m.group(7)) != year:
             continue
-        m1 = MONTHS[m.group(1)]
-        m2 = MONTHS[m.group(3)] if m.group(3) else m1
+        note = (m.group(5) or "").strip("() ").lower()
+        kind = m.group(6) or ""
+        if not kind and not note:
+            continue
+        if "cancel" in note:
+            continue  # 中止された会合
+        m1 = mon(m.group(1))
+        m2 = mon(m.group(3)) if m.group(3) else m1
         d1 = int(m.group(2))
         d2 = int(m.group(4)) if m.group(4) else d1
-        kind = m.group(5)
-        out.append(dict(start=date(year, m1, d1), end=date(year, m2, d2), sep=False,
-                        note="" if kind == "Meeting" else kind.lower(),
+        if kind and kind != "Meeting":
+            note = (note + " " + kind.lower()).strip()
+        out.append(dict(start=date(year, m1, d1), end=date(year, m2, d2), sep=False, note=note,
                         src=f"https://www.federalreserve.gov/monetarypolicy/fomchistorical{year}.htm"))
     return out
 
@@ -140,7 +153,17 @@ def main():
         scheduled = m["note"] in ("",)
         if not scheduled and decision in ("", "据え置き"):
             continue  # 臨時の電話会議で金利を動かさなかったものは登録しない
-        eid = f"fomc-{m['end']}"
+        ann = m["end"]
+        if not scheduled and before_u is not None:
+            # 臨時会合：発表日 ＝ 誘導目標（FRED）が変わった日の前日（変更は発表の翌日から適用される）
+            d = m["start"]
+            while d <= m["end"] + timedelta(days=3):
+                v = upper.get(d.isoformat())
+                if v is not None and v != before_u:
+                    ann = max(m["start"], d - timedelta(days=1))
+                    break
+                d += timedelta(days=1)
+        eid = f"fomc-{ann}"
         if scheduled:
             t = datetime(m["end"].year, m["end"].month, m["end"].day, 14, 0, tzinfo=ET)
             dt_utc = t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
@@ -148,11 +171,11 @@ def main():
             basis = "定例会合の声明の公表時刻 14:00 ET（FRBの慣例。個別の時刻は未確認）"
         else:
             dt_utc, dt_jst = "", ""
-            basis = "臨時会合。時刻は未確認のため日付のみ（値動きは日足で計算）"
+            basis = ("臨時会合。発表日は誘導目標（FRED）が変わった日の前日。時刻は未確認のため日付のみ（値動きは日足で計算）")
         span = f"{m['start']}〜{m['end']}" if m["start"] != m["end"] else f"{m['end']}"
         events.append(dict(event_id=eid, category="金融政策", subcategory="fomc",
                            name=f"FOMC（{span}{'、臨時' if not scheduled else ''}）：{decision or '判定できず'}",
-                           date_et=m["end"].isoformat(), datetime_utc=dt_utc, datetime_jst=dt_jst,
+                           date_et=ann.isoformat(), datetime_utc=dt_utc, datetime_jst=dt_jst,
                            time_basis=basis, reference_period="",
                            details=("経済見通し（SEP）あり" if m["sep"] else "") + (f" {m['note']}" if m["note"] else ""),
                            source="FRB FOMC calendars（日程）、FRED DFEDTARU/DFEDTARL（決定）",
