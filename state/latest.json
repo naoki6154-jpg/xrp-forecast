@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T10:18:02Z",
+  "updated_at": "2026-11-07T10:27:42Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得は稼働（7取得先）。日本のクラウドと過去事実データベースは未着手",
   "data": {},
@@ -42,7 +42,7 @@
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-07T10:18:02Z",
+      "fetched_at": "2026-11-07T10:27:42Z",
       "error": "",
       "rows": 1278,
       "added": 0,
@@ -68,10 +68,14 @@
       "note": "本日 656市場"
     },
     "jp_relay": {
-      "ok": false,
-      "last_error": "RuntimeError: JP_RELAY_URL / JP_RELAY_TOKEN が未設定（GitHubのSecretsを確認）",
-      "last_failed_at": "2026-11-07T10:18:00Z"
+      "ok": true,
+      "fetched_at": "2026-11-07T10:27:39Z",
+      "error": "",
+      "rows": 884,
+      "added": 884,
+      "last": "2026-11-07",
+      "note": "全項目取得"
     }
   },
-  "last_fetch_run": "2026-11-07T10:18:00Z"
+  "last_fetch_run": "2026-11-07T10:27:38Z"
 }
