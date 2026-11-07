@@ -1,0 +1,2 @@
+time,ledger_index,total_coins_drops,total_coins_xrp,close_time,source,fetched_at
+2026-11-07T11:30:50Z,108173583,99985562824444928,99985562824.44493,2026-Nov-07 11:30:42.000000000 UTC,XRPL公開ノード https://xrplcluster.com/ ledger(validated),2026-11-07T11:30:50Z
