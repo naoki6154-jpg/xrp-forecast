@@ -34,7 +34,9 @@ gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:${SA_
 echo "  読み取りを実行する権限：OK"
 # 作ったばかりの係は行き渡るまで少しかかるので、待って再試行する
 granted=no
-for i in 1 2 3 4 5; do
+# 注：bq add-iam-policy-binding はGoogleの許可制の機能で、このアカウントでは使えなかった（2026-11-08）。
+# そのため最初から共有設定（ACL）で付ける。
+for i in; do
   if bq add-iam-policy-binding --member="serviceAccount:${SA_EMAIL}" --role="roles/bigquery.dataViewer" \
        "${PROJECT}:${DATASET}" > /tmp/bq_iam.log 2>&1; then
     granted=yes; break
