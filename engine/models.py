@@ -137,9 +137,11 @@ def model_a_chunk(seed, n, T, base_sig, vmult, events_c, jumps, fx_sig, t_df, h_
 
 
 def model_c_chunk(seed, n, T, sig, fx_sig, t_df):
-    """オプションの予想変動率の代わりに実現変動率を使う、方向の偏りなし（期待値ゼロ）の分布。"""
+    """方向の偏りなし（期待値ゼロ）の分布。sig は1日ごとの変動（Deribitの予想変動率の期間構造。無ければ実現変動率の一定値）。"""
     rng = np.random.default_rng(seed)
-    s = np.float32(sig)
+    s = np.asarray(sig, dtype=np.float32)
+    if s.ndim == 1:
+        s = s[None, :]
     r = -0.5 * s * s + s * _std_t(rng, t_df, (n, T))
     lx = np.cumsum(r, axis=1)
     lfx = np.cumsum(np.float32(fx_sig) * rng.standard_normal((n, T)).astype(np.float32), axis=1)

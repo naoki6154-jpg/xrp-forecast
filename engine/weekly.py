@@ -15,7 +15,7 @@ ROOT = os.path.dirname(HERE)
 JST = timezone(timedelta(hours=9))
 REPO = "naoki6154-jpg/xrp-forecast"
 SLOTS = [("morning", 7, 40), ("night", 21, 20)]
-TRIAL_START = datetime(2026, 11, 8, 7, 40, tzinfo=JST)   # 定時更新の初回（朝）。これより前の枠は数えない
+TRIAL_START = datetime(2026, 11, 9, 7, 40, tzinfo=JST)   # 試運転の数え始め（予想エンジン1.1に切り替えた次の朝。11/8の2回は1.0版）。これより前の枠は数えない
 # まだ取れていない欄（段階1の時点）。取れるようになったら消す
 NOT_YET = ["FedWatch（CME）", "経済指標の市場予想", "ニュース（②情報・イベント担当は段階2）", "Mac（補助）の取得", "運用中の予想の本格的な採点（③は段階3）"]
 FREE_MIN_PRIVATE = 2000  # 非公開リポジトリの無料枠（分/月）。公開リポジトリは無料で上限なし
