@@ -80,24 +80,30 @@ def parse_calendars(txt):
 def parse_historical(txt, year):
     """fomchistoricalYYYY.htm：『January 30-31 Meeting - 2018』『April 30-May 1 Meeting - 2019』など"""
     out = []
-    pat = re.compile(rf"({MON_ANY}) (\d{{1,2}})(?:{DASH}(?:({MON_ANY}) )?(\d{{1,2}}))?"
+    # 例：「January 31-February 1 Meeting - 2017」「Jan/Feb 31-1 Meeting - 2017」「March 2 (unscheduled) Meeting - 2020」
+    pat = re.compile(rf"({MON_ANY})(?:\s*/\s*({MON_ANY}))? (\d{{1,2}})(?:{DASH}(?:({MON_ANY}) )?(\d{{1,2}}))?"
                      rf"\s*(\([^)]*\))?\s*(Meeting|Conference Call|Unscheduled Meeting)?\s*-\s*(\d{{4}})")
     for m in pat.finditer(txt):
-        if int(m.group(7)) != year:
+        if int(m.group(8)) != year:
             continue
-        note = (m.group(5) or "").strip("() ").lower()
-        kind = m.group(6) or ""
+        note = (m.group(6) or "").strip("() ").lower()
+        kind = m.group(7) or ""
         if not kind and not note:
             continue
         if "cancel" in note:
             continue  # 中止された会合
         m1 = mon(m.group(1))
-        m2 = mon(m.group(3)) if m.group(3) else m1
-        d1 = int(m.group(2))
-        d2 = int(m.group(4)) if m.group(4) else d1
+        m2 = mon(m.group(2) or m.group(4)) if (m.group(2) or m.group(4)) else m1
+        d1 = int(m.group(3))
+        d2 = int(m.group(5)) if m.group(5) else d1
         if kind and kind != "Meeting":
             note = (note + " " + kind.lower()).strip()
-        out.append(dict(start=date(year, m1, d1), end=date(year, m2, d2), sep=False, note=note,
+        try:
+            start, end = date(year, m1, d1), date(year, m2, d2)
+        except ValueError:
+            print(f"  読めない日付を飛ばした：{m.group(0)}")
+            continue
+        out.append(dict(start=start, end=end, sep=False, note=note,
                         src=f"https://www.federalreserve.gov/monetarypolicy/fomchistorical{year}.htm"))
     return out
 
