@@ -146,7 +146,12 @@ def etf_flows():
             idx = [i for i, c in enumerate(cells) if re.match(r"^\d{1,2} [A-Z][a-z]{2} \d{4}$", c[0])]
             if len(idx) > len(best):
                 best = [cells[i] for i in idx]
-                header = cells[idx[0] - 1] if idx[0] > 0 else []  # 日付の行のすぐ上の行を見出しとする
+                # 見出し：日付の行より上で、銘柄コード（英字）が2つ以上ある一番近い行
+                header = []
+                for j in range(idx[0] - 1, -1, -1):
+                    if sum(bool(re.match(r"^[A-Z]{3,5}$", x)) for x in cells[j]) >= 2:
+                        header = cells[j]
+                        break
         if not best:
             notes.append(f"{asset}: 表が見つからない")
             continue
@@ -155,7 +160,7 @@ def etf_flows():
             dt = datetime.strptime(c[0], "%d %b %Y").strftime("%Y-%m-%d")
             row = dict(date=dt)
             for i, v in enumerate(c[1:], start=1):
-                col = header[i] if i < len(header) and header[i] else f"col{i}"
+                col = header[i] if i < len(header) and re.match(r"^[A-Za-z]+$", header[i] or "") else f"col{i}"
                 row[f"{col}_raw"] = v
             row["total_usd_m"] = _parse_num(c[-1])
             row.update(source=f"Farside Investors {url}（同社は推定値を含むと注記）", fetched_at=fetched_at)
