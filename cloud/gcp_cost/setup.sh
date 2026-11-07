@@ -31,8 +31,32 @@ gcloud iam service-accounts describe "$SA_EMAIL" >/dev/null 2>&1 \
 # 読み取りを実行する権限（プロジェクト）と、データセットを読む権限（このデータセットだけ）
 gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:${SA_EMAIL}" \
   --role="roles/bigquery.jobUser" --condition=None --quiet > /dev/null
-bq add-iam-policy-binding --member="serviceAccount:${SA_EMAIL}" --role="roles/bigquery.dataViewer" \
-  "${PROJECT}:${DATASET}" > /dev/null
+echo "  読み取りを実行する権限：OK"
+# 作ったばかりの係は行き渡るまで少しかかるので、待って再試行する
+granted=no
+for i in 1 2 3 4 5; do
+  if bq add-iam-policy-binding --member="serviceAccount:${SA_EMAIL}" --role="roles/bigquery.dataViewer" \
+       "${PROJECT}:${DATASET}" > /tmp/bq_iam.log 2>&1; then
+    granted=yes; break
+  fi
+  echo "  データセットの権限：まだ付けられません（${i}/5）。20秒待って再試行します…"
+  tail -n 3 /tmp/bq_iam.log
+  sleep 20
+done
+if [ "$granted" = no ]; then
+  echo "  別の方法（データセットの共有設定）で読む権限を付けます"
+  bq show --format=prettyjson "${PROJECT}:${DATASET}" > /tmp/ds.json
+  python3 - "$SA_EMAIL" <<'PY'
+import json, sys
+p = "/tmp/ds.json"; d = json.load(open(p)); sa = sys.argv[1]
+acc = d.setdefault("access", [])
+if not any(a.get("userByEmail") == sa for a in acc):
+    acc.append({"role": "READER", "userByEmail": sa})
+json.dump({"access": acc}, open(p, "w"))
+PY
+  bq update --source /tmp/ds.json "${PROJECT}:${DATASET}"
+fi
+echo "  データセットを読む権限：OK"
 
 echo "=== 4/5 GitHub との連携（このリポジトリの GitHub Actions だけ） ==="
 gcloud iam workload-identity-pools describe "$POOL" --location=global >/dev/null 2>&1 \
