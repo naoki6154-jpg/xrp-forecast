@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "checked_at": "2026-11-07T21:36:27Z",
+  "checked_at": "2026-11-07T21:46:43Z",
   "last_date_jst": "",
-  "note": "Google Cloud との連携が未設定（cloud/gcp_cost/setup.sh をまだ実行していない可能性）"
+  "note": "請求データのエクスポートがまだ届いていない（設定直後は数時間〜1日かかる）：BigQuery error in query operation: Error processing job 'xrp- forecast:bqjob_r12d89be86a8ae259_000001a1b7fa6459_1': xrp-"
 }
