@@ -37,7 +37,7 @@
 | `changelog/<YYYYMMDDHHMMSS>` | 画面設定を変える人 | 変更の履歴（`at`・`by`・`what`）。画面の一番下に出る |
 | `data/users/<利用者のid>/position` | 💼 保有ポジション チャット | 保有枚数 `qty`・取得額 `cost_jpy`・戦略の比較 `strategies`。本人だけが読める |
 
-**画面設定の欄の種類**（`sections[].type`）：status・forecast・agents・fetchers・freshness・derivatives・macro・events・news・verification・position と、汎用の number（数字）・table（表）・line（折れ線）・bar（棒グラフ）・list（一覧）。
+**画面設定の欄の種類**（`sections[].type`）：summary（サマリー：価格・全体の点検・4期間の上がる確率）・pipeline（エージェントの動き：取得→①→②→予想エンジン→③→メイン の6段の流れ、次の定時更新、試運転14回の成否。params に schedule・since・grace_min・trial_start・trial_days）・status・forecast・agents・fetchers・freshness・derivatives・macro・events・news・verification・position と、汎用の number（数字）・table（表）・line（折れ線）・bar（棒グラフ）・list（一覧）。
 汎用の欄は `params.path` で最新の更新（`updates`）の中の場所を指す（例 `derivatives.funding`、`history.forecast.vol_annual` で更新ごとの推移）。`fields`（列）、`fmt`（pct・yen・usd・money）、`warn`（`{key, op, value}` で赤くする）、`label`。
 
 **チャットで画面設定を変えるとき**：`config/layout` を db_get → その内容を `layout_history/<日時>` に set → `config/layout` を `version`+1 で書く（ifVersion 付き）→ `changelog/<日時>` を追加 → handoff.md に1行追記。
