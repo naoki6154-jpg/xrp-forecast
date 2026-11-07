@@ -6,7 +6,7 @@
 - リポジトリ：`naoki6154-jpg/xrp-forecast`（ブランチ main）
 - ダッシュボード：https://claude.ai/artifact/Gx6ZDpofZMFHSSC1zMLzi2 （slug `812a6935-60db-4520-a941-033b834823a7`）
 - 予想の数字は全て `engine/run.py` が出す。AIは数字を作らず、表示された JSON をそのまま書き写すだけ。
-- 書き込みの決まり：自分の担当（engine/・forecasts/）以外は変更しない。handoff.md は末尾に1行追記するだけ。push の前に必ず pull。ぶつかったら相手の変更を消さずに止めて報告する。
+- 書き込みの決まり：定時実行が変更してよいのは forecasts/ と、handoff.md の末尾への追記（朝の手順7）だけ。engine/ を含め、他は変更しない。push の前に必ず pull。ぶつかったら相手の変更を消さずに止めて報告する。
 - 投資助言ではない。注文は出さない。
 
 ## 手順
@@ -30,26 +30,32 @@
    ```
    python3 engine/run.py --mode $MODE --run-id $RID
    ```
-   失敗したら、エラーの最後の数行をメモして手順8へ（状態は「失敗」）。
+   失敗したら、エラーの最後の数行をメモして手順9へ（状態は「失敗」）。
 6. **ダッシュボードに予想を書く**：`python3 engine/dash_ops.py update` の出力を、そのまま db_write の ops に渡す。
    1文字も変えない（数字を丸めたり要約したりしない）。書けなかったら1回だけやり直し、だめなら「一部失敗」。
-7. **記録をGitHubに保存**（forecasts/ だけ）：
+7. **（朝だけ）画面の変更履歴を handoff.md に書き写す**：利用者がダッシュボードの「編集」で変えた内容は、ダッシュボードの履歴にしか残らないため。
+   - db_query で collection `changelog` を `orderBy: -at`、`limit: 50` で読む。
+   - `by` が「利用者」で始まるものだけを選ぶ（チャットが書いた分は、そのチャットが handoff.md に書いている）。
+   - そのうち、handoff.md にまだ `changelog/<文書のid>` の文字列が無いものを、古い順に1件1行で、handoff.md の**末尾に追記**する（書き換えない）。
+     形式：`- YYYY-MM-DD HH:MM JST［利用者（ダッシュボードの編集）］<what の内容>（changelog/<文書のid>。朝の定時更新が書き写し）`
+   - 該当が無ければ何もしない。夜の更新では行わない。
+8. **記録をGitHubに保存**（forecasts/ と、朝に書き写した場合の handoff.md だけ）：
    ```
-   git add forecasts/ && git commit -q -m "forecast: $RID" && git pull -q --rebase && git push -q
+   git add forecasts/ handoff.md && git commit -q -m "forecast: $RID" && git pull -q --rebase && git push -q
    ```
    pull でぶつかったら、`git rebase --abort` で止め、相手の変更を消さずに報告する（push しない）。
-8. **メインの終了を記録**：
+9. **メインの終了を記録**：
    ```
    python3 engine/dash_ops.py runlog --agent main --phase end --run-id $RID --mode $MODE --status 成功 --duration <秒> --ok-items <書けた期間の数> [--failed 項目,項目] [--note "..."]
    ```
    状態は 成功／一部失敗／失敗 のどれか。出力を db_write。
-9. **報告**：`engine/out/summary.txt` の内容を、そのまま報告する。異常（失敗、代わりの取得先、モデル間の差が大きい、データが古い）があれば先頭に書く。
+10. **報告**：`engine/out/summary.txt` の内容を、そのまま報告する。異常（失敗、代わりの取得先、モデル間の差が大きい、データが古い）があれば先頭に書く。
    朝の実行で異常があったとき、または前回より「1週間後に上がる確率」が10ポイント以上動いたときは、プッシュ通知を送る。
 
 ## 夜の軽い更新
 
 手順は同じ。②情報・イベント担当と③検証担当は段階1では動かさない（ダッシュボードでは「待機」）。
-夜は①の点検と予想の再計算だけを行う。
+夜は①の点検と予想の再計算だけを行い、手順7（画面の変更履歴の書き写し）は行わない。
 
 ## よくある失敗
 
