@@ -45,3 +45,5 @@
 **チャットで画面設定を変えるとき**：`config/layout` を db_get → その内容を `layout_history/<日時>` に set → `config/layout` を `version`+1 で書く（ifVersion 付き）→ `changelog/<日時>` を追加 → handoff.md に1行追記。
 
 鍵の一覧表は `docs/keys.md`（鍵そのものは書かない）。止まったときの対応は `engine/RUNBOOK.md` の最後の節。
+
+画面はタブ式（2026-11-08〜）：画面設定の `sections` の順にタブが並び、`visible:false` の欄はタブに出ない。`collapsed` はタブ式では使わない。URLの末尾 `#<欄のid>`（例 `#forecast`）で開くタブを指定できる。
