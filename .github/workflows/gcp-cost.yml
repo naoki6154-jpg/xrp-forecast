@@ -36,6 +36,8 @@ jobs:
         if: steps.auth.outcome == 'success'
 
       - name: 費用を取得
+        env:
+          GCP_AUTH_OK: ${{ steps.auth.outcome == 'success' }}
         run: python3 fetchers/gcp_cost.py
 
       - name: 保存（コミット）

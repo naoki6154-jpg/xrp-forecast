@@ -53,7 +53,7 @@ def write_status(ok, note, last=""):
 
 
 def main():
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") and not os.environ.get("CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE"):
+    if os.environ.get("GCP_AUTH_OK", "").lower() != "true":
         write_status(False, "Google Cloud との連携が未設定（cloud/gcp_cost/setup.sh をまだ実行していない可能性）")
         return 0
     cmd = ["bq", "query", "--quiet", "--use_legacy_sql=false", "--format=json", f"--project_id={PROJECT}",
