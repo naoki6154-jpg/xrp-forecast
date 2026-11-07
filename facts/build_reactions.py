@@ -97,6 +97,11 @@ def daily(ev_d, days, x1d, b1d):
 
 
 def main():
+    # 先に、手で登録した出来事の合流と、市場予想の反映を行う（定時実行の手順を増やさないため、ここから呼ぶ）
+    import apply_consensus
+    import build_manual
+    build_manual.main()
+    apply_consensus.main()
     x1h, b1h, x1d, b1d = load_1h("xrp"), load_1h("btc"), load_1d("xrp"), load_1d("btc")
     with open(os.path.join(FACTS, "events.csv"), newline="", encoding="utf-8") as f:
         events = list(csv.DictReader(f))

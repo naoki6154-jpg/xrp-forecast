@@ -26,6 +26,7 @@ FACTS = os.path.join(ROOT, "facts")
 ET = ZoneInfo("America/New_York")
 JST = ZoneInfo("Asia/Tokyo")
 START = date(2016, 1, 1)
+MAX_SECONDS = int(os.environ.get("FACTS_MAX_SECONDS", "1200"))  # 1回の実行の上限。残りは次の回に続ける
 API = "https://api.stlouisfed.org/fred"
 
 EVENT_FIELDS = ["event_id", "category", "subcategory", "name", "date_et", "datetime_utc", "datetime_jst",
@@ -108,15 +109,22 @@ def main():
     today = datetime.now(timezone.utc).date()
     recorded_at = now_utc_iso()
     events, values = [], []
+    t_start = time.time()
+    run_refs = {}
+    stopped = False
     for rid, (title, sub, metrics) in RELEASES.items():
         j = get(f"{API}/release/dates?release_id={rid}&api_key=KEY&file_type=json&realtime_start={START}"
                 f"&realtime_end=9999-12-31&include_release_dates_with_no_data=false&sort_order=asc&limit=10000", key)
         dates = [date.fromisoformat(x["date"]) for x in j["release_dates"]]
         dates = [d for d in dates if START <= d < today]
-        new = [d for d in dates if f"{sub}-{d}" not in have]
+        # 新しい発表から順に取り込む（直近の分を先にそろえる）
+        new = sorted([d for d in dates if f"{sub}-{d}" not in have], reverse=True)
         print(f"{title}: 発表日 {len(dates)}件（新規 {len(new)}件）")
         last_ref = None
         for d in new:
+            if time.time() - t_start > MAX_SECONDS:
+                stopped = True
+                break
             series_cache = {}
             ref = None
             row_values = []
@@ -133,9 +141,17 @@ def main():
                                        method=f"{sid} の {d} 時点の公表値（ALFRED）から計算。対象月 {obs[-1][0][:7]}"
                                               + ("。公表値は指数の丸めにより0.1ポイント違うことがある" if how in ("mom", "yoy") else ""),
                                        source="FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）"))
-            if not row_values or (sub, ref) in refs_seen:
-                continue  # 新しい月の数字が出ていない日（年次改定だけの日など）は登録しない
+            if not row_values:
+                continue
+            if (sub, ref) in refs_seen:
+                # 同じ対象月が2回出た：一番早い日を初回発表として残す（新しい順に処理しているので、前に入れた方を消す）
+                prev_id = run_refs.get((sub, ref))
+                if prev_id is None:
+                    continue  # 前の回で登録済み（そちらの方が早い）
+                events = [e for e in events if e["event_id"] != prev_id]
+                values = [v for v in values if v["event_id"] != prev_id]
             refs_seen.add((sub, ref))
+            run_refs[(sub, ref)] = f"{sub}-{d}"
             t_et = datetime(d.year, d.month, d.day, 8, 30, tzinfo=ET)
             events.append(dict(
                 event_id=f"{sub}-{d}", category="経済指標", subcategory=sub, name=f"{title}（{ref}分）",
@@ -148,10 +164,10 @@ def main():
                 source_url=f"https://fred.stlouisfed.org/releases/{rid}", recorded_at=recorded_at))
             values += row_values
             last_ref = ref
-        print(f"  最後に登録した対象月：{last_ref}")
+        print(f"  一番古く登録した対象月：{last_ref}")
     merge_csv(ev_path, events, ["event_id"], EVENT_FIELDS)
     merge_csv(os.path.join(FACTS, "event_values.csv"), values, ["event_id", "metric"], VALUE_FIELDS)
-    print(f"登録：出来事 {len(events)}件、数値 {len(values)}件")
+    print(f"登録：出来事 {len(events)}件、数値 {len(values)}件" + ("（時間の上限で区切った。続きは次の回）" if stopped else ""))
 
 
 if __name__ == "__main__":
