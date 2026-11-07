@@ -453,3 +453,9 @@ ALL = {
     "polymarket": polymarket,
     "jp_relay": jp_relay,
 }
+
+
+# 段階0の追加の取得先（sources_extra.py）
+from sources_extra import EXTRA  # noqa: E402
+
+ALL.update(EXTRA)
