@@ -14,3 +14,5 @@ run_at,source,ok,rows,added,last,error
 2026-11-07T10:08:42Z,kraken,1,2884,0,2026-11-07,
 2026-11-07T10:08:42Z,okx,1,1278,0,2026-11-07,
 2026-11-07T10:08:42Z,polymarket,1,656,0,2026-11-07,
+2026-11-07T10:18:00Z,jp_relay,0,,,,RuntimeError: JP_RELAY_URL / JP_RELAY_TOKEN が未設定（GitHubのSecretsを確認）
+2026-11-07T10:18:00Z,okx,1,1278,0,2026-11-07,
