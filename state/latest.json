@@ -1,72 +1,77 @@
 {
-  "updated_at": "2026-11-07T09:14:46Z",
+  "updated_at": "2026-11-07T10:09:01Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得は稼働（7取得先）。日本のクラウドと過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:12:42Z",
+      "fetched_at": "2026-11-07T10:08:42Z",
       "error": "",
       "rows": 3233,
-      "added": 3233,
+      "added": 0,
       "last": "2026-11-07",
       "note": "日足の区切りは bitbank の仕様に従う（タイムスタンプをUTC日付で記録）"
     },
     "kraken": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:12:43Z",
+      "fetched_at": "2026-11-07T10:08:43Z",
       "error": "",
       "rows": 2884,
-      "added": 2884,
+      "added": 0,
       "last": "2026-11-07",
       "note": "XRP:721行, BTC:721行, ETH:721行, XLM:721行"
     },
     "binance_vision": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:14:31Z",
+      "fetched_at": "2026-11-07T10:08:47Z",
       "error": "",
       "rows": 12655,
-      "added": 12655,
+      "added": 0,
       "last": "2026-11-06",
       "note": "XRP:3109行, BTC:3232行, ETH:3232行, XLM:3082行"
     },
     "fear_greed": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:14:31Z",
+      "fetched_at": "2026-11-07T10:08:47Z",
       "error": "",
       "rows": 3198,
-      "added": 3198,
+      "added": 0,
       "last": "2026-11-07",
       "note": ""
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:14:34Z",
+      "fetched_at": "2026-11-07T10:08:49Z",
       "error": "",
       "rows": 1278,
-      "added": 1278,
+      "added": 0,
       "last": "2026-11-07",
       "note": ""
     },
     "fred": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:14:45Z",
+      "fetched_at": "2026-11-07T10:08:58Z",
       "error": "",
       "rows": 35157,
-      "added": 35157,
+      "added": 0,
       "last": "2026-11-06",
       "note": "15系列＋初回発表値6系列＋発表日3種"
     },
     "polymarket": {
       "ok": true,
-      "fetched_at": "2026-11-07T09:14:46Z",
+      "fetched_at": "2026-11-07T10:09:01Z",
       "error": "",
       "rows": 656,
-      "added": 656,
+      "added": 0,
       "last": "2026-11-07",
       "note": "本日 656市場"
+    },
+    "jp_relay": {
+      "ok": false,
+      "last_error": "RuntimeError: JP_RELAY_URL / JP_RELAY_TOKEN が未設定（GitHubのSecretsを確認）",
+      "last_failed_at": "2026-11-07T10:09:01Z"
     }
   },
-  "last_fetch_run": "2026-11-07T09:12:37Z"
+  "last_fetch_run": "2026-11-07T10:08:42Z"
 }
