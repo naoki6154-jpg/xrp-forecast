@@ -23,7 +23,7 @@ jobs:
         env:
           JP_RELAY_URL: ${{ secrets.JP_RELAY_URL }}
           JP_RELAY_TOKEN: ${{ secrets.JP_RELAY_TOKEN }}
-        run: python3 fetchers/run.py jp_relay okx
+        run: python3 fetchers/run.py jp_relay okx bitbank
       - name: 保存（コミット）
         run: |
           git config user.name "xrp-forecast-bot"
