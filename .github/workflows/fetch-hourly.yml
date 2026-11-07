@@ -1,0 +1,38 @@
+# 1時間ごとの取得：Binance・Bybit（東京の中継係経由）とOKX（設計書 3-4 方法C）
+name: fetch-hourly
+
+on:
+  schedule:
+    - cron: "5 * * * *"   # 毎時5分
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: 取得
+        env:
+          JP_RELAY_URL: ${{ secrets.JP_RELAY_URL }}
+          JP_RELAY_TOKEN: ${{ secrets.JP_RELAY_TOKEN }}
+        run: python3 fetchers/run.py jp_relay okx
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data state
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "data: 毎時取得 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1

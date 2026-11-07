@@ -8,7 +8,7 @@ import io
 import os
 from datetime import date, datetime, timezone, timedelta
 
-from common import (RAW, http_get, merge_csv, ms_to_date, ms_to_iso, now_utc_iso,
+from common import (RAW, http_get, merge_csv, merge_csv_dynamic, ms_to_date, ms_to_iso, now_utc_iso,
                     read_csv_keys, last_value, unzip_single_csv)
 
 OHLC_FIELDS = ["date", "open", "high", "low", "close", "volume", "partial", "source", "fetched_at"]
@@ -274,6 +274,80 @@ def polymarket():
     return dict(rows=total, added=added, last=fetched_at[:10], note=f"本日 {len(rows)}市場")
 
 
+# ---------- 日本の中継係経由：Binance・Bybit（設計書 3-4 方法C） ----------
+# 名前: (返ってきたJSONの中で記録の一覧がある場所, 時刻の項目名)。None は「現在値」1件。
+JP_LISTS = {
+    "binance_oi_hist_1h": ([], "timestamp"),
+    "binance_lsr_global_1h": ([], "timestamp"),
+    "binance_lsr_top_pos_1h": ([], "timestamp"),
+    "binance_taker_ratio_1h": ([], "timestamp"),
+    "binance_funding": ([], "fundingTime"),
+    "bybit_oi_1h": (["result", "list"], "timestamp"),
+    "bybit_lsr_1h": (["result", "list"], "timestamp"),
+    "bybit_funding": (["result", "list"], "fundingRateTimestamp"),
+}
+JP_SNAPSHOTS = {
+    "binance_premium": [],
+    "binance_oi_now": [],
+    "binance_spot_24h": [],
+    "bybit_ticker": ["result", "list", 0],
+}
+
+
+def _rename_time(rec):
+    """取引所の項目名 time / symbol は、こちらの列と重なるので api_ を付けて残す"""
+    return {("api_" + k if k in ("time", "symbol", "source", "fetched_at") else k): v for k, v in rec.items()}
+
+
+def _dig(obj, path):
+    for p in path:
+        obj = obj[p]
+    return obj
+
+
+def jp_relay():
+    """東京の Cloud Run（中継係）から Binance・Bybit の公開データを受け取り、そのまま保存する。"""
+    url = os.environ.get("JP_RELAY_URL", "").strip().rstrip("/")
+    token = os.environ.get("JP_RELAY_TOKEN", "").strip()
+    if not url or not token:
+        raise RuntimeError("JP_RELAY_URL / JP_RELAY_TOKEN が未設定（GitHubのSecretsを確認）")
+    import json
+    import urllib.request
+    req = urllib.request.Request(f"{url}/bundle?symbols=XRP,BTC",
+                                 headers={"X-Relay-Token": token, "User-Agent": "xrp-forecast-fetcher"})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        d = json.loads(r.read())
+    total = added = 0
+    ng = []
+    base = os.path.join(RAW, "jp_relay")
+    for it in d["items"]:
+        name, sym = it["name"], it["symbol"]
+        if it.get("status") != 200 or "body" not in it:
+            ng.append(f"{name}/{sym}:{it.get('status')} {it.get('error', '')[:60]}")
+            continue
+        meta = dict(symbol=sym, source=f"{it['url']}（東京のCloud Run経由）", fetched_at=it["received_at"])
+        try:
+            if name in JP_LISTS:
+                path_, tfield = JP_LISTS[name]
+                recs = _dig(it["body"], path_)
+                rows = [{"time": ms_to_iso(rec[tfield]), **_rename_time(rec), **meta} for rec in recs]
+                t, a = merge_csv_dynamic(os.path.join(base, f"{name}_{sym.lower()}.csv"), rows, ["time"],
+                                         first_fields=["time"])
+            else:
+                rec = _dig(it["body"], JP_SNAPSHOTS[name])
+                rows = [{"time": it["received_at"][:19] + "Z",
+                         **{k: v for k, v in _rename_time(rec).items() if not isinstance(v, (list, dict))}, **meta}]
+                t, a = merge_csv_dynamic(os.path.join(base, f"{name}_{sym.lower()}.csv"), rows, ["time"],
+                                         first_fields=["time"])
+            total += t; added += a
+        except Exception as e:  # noqa: BLE001  形が想定と違った（取引所の仕様変更など）
+            ng.append(f"{name}/{sym}: 形が想定外 {type(e).__name__}")
+    if ng and added == 0:
+        raise RuntimeError("中継係から1件も取れず：" + "; ".join(ng)[:250])
+    return dict(rows=total, added=added, last=d.get("generated_at", "")[:10],
+                note=("取れなかった項目：" + "; ".join(ng)[:250]) if ng else "全項目取得")
+
+
 ALL = {
     "bitbank": bitbank_daily,
     "kraken": kraken_daily,
@@ -282,4 +356,5 @@ ALL = {
     "okx": okx_derivatives,
     "fred": fred,
     "polymarket": polymarket,
+    "jp_relay": jp_relay,
 }

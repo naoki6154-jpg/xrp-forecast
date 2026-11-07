@@ -40,6 +40,8 @@ jobs:
       - name: 取得
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          JP_RELAY_URL: ${{ secrets.JP_RELAY_URL }}
+          JP_RELAY_TOKEN: ${{ secrets.JP_RELAY_TOKEN }}
         run: python3 fetchers/run.py ${{ github.event.inputs.sources }}
 
       - name: 保存（コミット）

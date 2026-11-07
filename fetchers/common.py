@@ -81,6 +81,32 @@ def merge_csv(path, rows, key_fields, fieldnames):
     return len(existing), len(existing) - before
 
 
+def merge_csv_dynamic(path, rows, key_fields, first_fields=()):
+    """merge_csv と同じだが、列は既存の列と新しい行の項目を合わせたものにする（取得先の項目が増えても落とさない）。"""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    existing, fields = {}, list(first_fields)
+    if os.path.exists(path):
+        with open(path, newline="", encoding="utf-8") as f:
+            rd = csv.DictReader(f)
+            for c in rd.fieldnames or []:
+                if c not in fields:
+                    fields.append(c)
+            for r in rd:
+                existing[tuple(r[k] for k in key_fields)] = r
+    before = len(existing)
+    for r in rows:
+        for c in r:
+            if c not in fields:
+                fields.append(c)
+        existing[tuple(str(r[k]) for k in key_fields)] = {k: ("" if v is None else v) for k, v in r.items()}
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields, restval="")
+        w.writeheader()
+        for k in sorted(existing):
+            w.writerow(existing[k])
+    return len(existing), len(existing) - before
+
+
 def read_csv_keys(path, field):
     if not os.path.exists(path):
         return set()
