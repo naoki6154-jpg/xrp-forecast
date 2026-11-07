@@ -1,0 +1,58 @@
+# 一次データの定時取得（設計書 3-2・3-4）
+# 朝 07:15 JST（米国市場の終了後）と 夜 19:15 JST に実行。
+# 手動実行（Actions画面の「Run workflow」）と、取得プログラムを変更したときにも動く。
+name: fetch-daily
+
+on:
+  schedule:
+    - cron: "15 22 * * *"   # 07:15 JST
+    - cron: "15 10 * * *"   # 19:15 JST
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: "取得先（空欄なら全部。例：fred okx）"
+        required: false
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - "fetchers/**"
+      - ".github/workflows/fetch-daily.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 取得
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python3 fetchers/run.py ${{ github.event.inputs.sources }}
+
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data state
+          if git diff --cached --quiet; then
+            echo "変更なし"; exit 0
+          fi
+          git commit -m "data: 定時取得 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
