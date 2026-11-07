@@ -11,6 +11,7 @@
 | `config.json` | 乱数の種、道筋の数、期間、重み、変動率の求め方 |
 | `dash_ops.py` | ダッシュボードに書く内容（稼働記録・予想）を JSON で出す |
 | `RUNBOOK.md` | 定時更新の手順（定時実行が毎回読む） |
+| `weekly.py`・`WEEKLY.md` | 週1回の振り返り（設計書16-2、毎週日曜 20:10、③検証）。毎日の定時更新とは別の仕組み |
 
 ## 計算の中身
 
@@ -35,9 +36,12 @@
 | `config/layout` | 利用者（編集ボタン）・チャット | 画面設定。欄の種類・順番・表示/非表示・開閉・中の項目（params）・単位・警告の値 |
 | `layout_history/<YYYYMMDDHHMMSS>` | 画面設定を変える人 | 変更前の画面設定（`layout`）。「前の形に戻す」はいちばん新しい1件を戻して消す |
 | `changelog/<YYYYMMDDHHMMSS>` | 画面設定を変える人 | 変更の履歴（`at`・`by`・`what`）。画面の一番下に出る |
+| `weekly/<YYYY>-W<ww>` | ③検証（週次の振り返り） | 週ごとの振り返り（問題と頼み先・採点・稼働・データの欠け・費用・予想の変化・来週の予定・改善の候補・鍵の期限）。`engine/out/weekly_ops.json` をそのまま書く |
 | `data/users/<利用者のid>/position` | 💼 保有ポジション チャット | 保有枚数 `qty`・取得額 `cost_jpy`・戦略の比較 `strategies`。本人だけが読める |
 
-**画面設定の欄の種類**（`sections[].type`）：summary（サマリー：価格・全体の点検・4期間の上がる確率）・pipeline（エージェントの動き：取得→①→②→予想エンジン→③→メイン の6段の流れ、次の定時更新、試運転14回の成否。params に schedule・since・grace_min・trial_start・trial_days）・status・forecast・agents・fetchers・freshness・derivatives・macro・events・news・verification・position と、汎用の number（数字）・table（表）・line（折れ線）・bar（棒グラフ）・list（一覧）。
+**画面設定の欄の種類**（`sections[].type`）：summary（サマリー：価格・全体の点検・4期間の上がる確率）・pipeline（エージェントの動き：取得→①→②→予想エンジン→③→メイン の6段の流れ、次の定時更新、試運転14回の成否。params に schedule・since・grace_min・trial_start・trial_days）・weekly（週次の振り返り：最新の週。params に stale_days）・status・forecast・agents・fetchers・freshness・derivatives・macro・events・news・verification・position と、汎用の number（数字）・table（表）・line（折れ線）・bar（棒グラフ）・list（一覧）。
 汎用の欄は `params.path` で最新の更新（`updates`）の中の場所を指す（例 `derivatives.funding`、`history.forecast.vol_annual` で更新ごとの推移）。`fields`（列）、`fmt`（pct・yen・usd・money）、`warn`（`{key, op, value}` で赤くする）、`label`。
 
 **チャットで画面設定を変えるとき**：`config/layout` を db_get → その内容を `layout_history/<日時>` に set → `config/layout` を `version`+1 で書く（ifVersion 付き）→ `changelog/<日時>` を追加 → handoff.md に1行追記。
+
+鍵の一覧表は `docs/keys.md`（鍵そのものは書かない）。止まったときの対応は `engine/RUNBOOK.md` の最後の節。
