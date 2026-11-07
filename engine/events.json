@@ -1,0 +1,142 @@
+{
+  "_note": "イベント登録表（設計書第7章）。モデルAはこの表をそのまま読む。p=結果の確率、effects=XRP（ドル建て）の対数リターンへの影響。basis は「市場」「実績」「判断」のどれか。「判断」は理由を必ず書く。段階1の初期値は、2026-11-07の100万回試算（mc1m.py）の設定を引き継いだもの。📰イベント台帳チャットで更新する。",
+  "updated_at": "2026-11-07T20:00:00+09:00",
+  "events": [
+    {
+      "id": "cpi_2026-11-10", "name": "米CPI（10月分）", "kind": "経済指標", "impact_size": "大",
+      "timing": {"at": "2026-11-10T22:30:00+09:00", "at_basis": "FREDの発表日（時刻は米東部8:30の慣例）"},
+      "p_basis": "判断", "p_reason": "市場予想・ナウキャストが未取得のため、既存試算の設定（上振れ寄り）を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "過去事実データベース（CPI後の反応）が未完成のため、既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "下振れ", "p": 0.15, "effects": [{"kind": "jump", "day": 0, "amt": 0.05, "noise": 0.012}, {"kind": "jump", "day": 1, "amt": 0.01}]},
+        {"label": "予想通り", "p": 0.40, "effects": [{"kind": "jump", "day": 0, "amt": 0.01, "noise": 0.012}]},
+        {"label": "上振れ", "p": 0.45, "effects": [{"kind": "jump", "day": 0, "amt": -0.03, "noise": 0.012}, {"kind": "jump", "day": 1, "amt": -0.012}]}
+      ]
+    },
+    {
+      "id": "nvda_2026-11", "name": "エヌビディア決算", "kind": "決算", "impact_size": "中",
+      "timing": {"at": "2026-11-20T06:30:00+09:00", "at_basis": "推定（11月第3週の米国引け後）。日付が確定したら直す"},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "好決算", "p": 0.40, "effects": [{"kind": "jump", "day": 0, "amt": 0.025, "noise": 0.012}]},
+        {"label": "予想通り", "p": 0.30, "effects": [{"kind": "jump", "day": 0, "amt": 0.0, "noise": 0.012}]},
+        {"label": "失望", "p": 0.30, "effects": [{"kind": "jump", "day": 0, "amt": -0.03, "noise": 0.012}]}
+      ]
+    },
+    {
+      "id": "nfp_2026-12-04", "name": "米雇用統計（11月分）", "kind": "経済指標", "impact_size": "大",
+      "timing": {"at": "2026-12-04T22:30:00+09:00", "at_basis": "FREDの発表日"},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "弱い", "p": 0.30, "effects": [{"kind": "jump", "day": 0, "amt": 0.025, "noise": 0.012}]},
+        {"label": "予想通り", "p": 0.45, "effects": [{"kind": "jump", "day": 0, "amt": -0.003, "noise": 0.012}]},
+        {"label": "強い", "p": 0.25, "effects": [{"kind": "jump", "day": 0, "amt": -0.03, "noise": 0.012}]}
+      ]
+    },
+    {
+      "id": "fomc_2026-12", "name": "FOMC（12月）", "kind": "金融政策", "impact_size": "大",
+      "timing": {"at": "2026-12-10T04:00:00+09:00", "at_basis": "既存試算の日程（米東部12/9 14:00）"},
+      "p_from_market": "polymarket_fed_year_end",
+      "p_basis": "市場", "p_reason": "Polymarketの「2026年末の政策金利の上限」の確率と、現在の上限（FRED DFEDTARU）から計算。取れないときは既存試算の78%（判断）",
+      "p_fallback": [0.22, 0.78],
+      "adjust": [
+        {"if": "cpi_2026-11-10", "outcome": "下振れ", "target": "利上げ", "delta": -0.23},
+        {"if": "cpi_2026-11-10", "outcome": "上振れ", "target": "利上げ", "delta": 0.10},
+        {"if": "nfp_2026-12-04", "outcome": "弱い", "target": "利上げ", "delta": -0.08},
+        {"if": "nfp_2026-12-04", "outcome": "強い", "target": "利上げ", "delta": 0.06}
+      ],
+      "adjust_basis": "判断", "adjust_reason": "CPI・雇用の結果で利上げ確率が動く連鎖（既存試算の設定）",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "据え置き", "p": 0.22, "effects": [{"kind": "jump", "day": 0, "amt": 0.05, "noise": 0.012}, {"kind": "fx", "day": 0, "amt": -0.006}]},
+        {"label": "利上げ", "p": 0.78, "effects": [{"kind": "jump", "day": 0, "amt": -0.025, "noise": 0.012}, {"kind": "fx", "day": 0, "amt": 0.004}]}
+      ]
+    },
+    {
+      "id": "cpi_2026-12-10", "name": "米CPI（11月分）", "kind": "経済指標", "impact_size": "大",
+      "timing": {"at": "2026-12-10T22:30:00+09:00", "at_basis": "FREDの発表日"},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "下振れ", "p": 0.30, "effects": [{"kind": "jump", "day": 0, "amt": 0.035, "noise": 0.01}]},
+        {"label": "予想通り", "p": 0.45, "effects": [{"kind": "jump", "day": 0, "amt": 0.0, "noise": 0.01}]},
+        {"label": "上振れ", "p": 0.25, "effects": [{"kind": "jump", "day": 0, "amt": -0.03, "noise": 0.01}]}
+      ]
+    },
+    {
+      "id": "boj_2026-12", "name": "日銀会合（12月）", "kind": "金融政策", "impact_size": "中",
+      "timing": {"at": "2026-12-18T12:00:00+09:00", "at_basis": "既存試算の日程"},
+      "p_basis": "判断", "p_reason": "既存試算の設定（五分五分）を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "据え置き", "p": 0.50, "effects": []},
+        {"label": "利上げ", "p": 0.50, "effects": [{"kind": "jump", "day": 0, "amt": -0.01}, {"kind": "fx", "day": 0, "amt": -0.012}]}
+      ]
+    },
+    {
+      "id": "taxloss_2026-12", "name": "年末の節税売り", "kind": "需給", "impact_size": "小",
+      "timing": {"at": "2026-12-17T00:00:00+09:00", "at_basis": "12月後半"},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "あり", "p": 0.70, "effects": [{"kind": "drift", "from": 0, "to": 14, "total": -0.02}]},
+        {"label": "なし", "p": 0.30, "effects": []}
+      ]
+    },
+    {
+      "id": "iran", "name": "イラン情勢（和平・再拡大）", "kind": "地政学", "impact_size": "大",
+      "timing": {"window": ["2026-11-11", "2026-12-28"], "at_basis": "時期は未定。期間内でランダム"},
+      "p_basis": "判断", "p_reason": "予測市場の該当市場が未取得のため、既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "和平合意", "p": 0.35, "effects": [{"kind": "jump", "day": 0, "amt": 0.04, "noise": 0.012}]},
+        {"label": "現状維持", "p": 0.45, "effects": []},
+        {"label": "戦闘再拡大", "p": 0.20, "effects": [{"kind": "jump", "day": 0, "amt": -0.05, "noise": 0.012}, {"kind": "vol", "from": 0, "to": 9, "mult": 1.3}]}
+      ]
+    },
+    {
+      "id": "hack_overhang", "name": "盗難XRPの売り圧力", "kind": "銘柄固有", "impact_size": "中",
+      "timing": {"from_start": true},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "短期で売り切り", "p": 0.50, "effects": [{"kind": "drift", "from": 0, "to": 6, "total": -0.042}, {"kind": "jump", "day": 7, "amt": 0.03}]},
+        {"label": "だらだら売り", "p": 0.35, "effects": [{"kind": "drift", "from": 0, "to": 39, "total": -0.06}]},
+        {"label": "売り停止", "p": 0.15, "effects": [{"kind": "jump", "day": 3, "amt": 0.02}]}
+      ]
+    },
+    {
+      "id": "equity_regime", "name": "米国株の局面", "kind": "外部要因", "impact_size": "中",
+      "timing": {"from_start": true},
+      "p_basis": "判断", "p_reason": "既存試算の設定を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ（55日で+6%／−10%）",
+      "outcomes": [
+        {"label": "株反発継続", "p": 0.40, "effects": [{"kind": "drift", "from": 0, "to": 54, "total": 0.06}]},
+        {"label": "横ばい", "p": 0.35, "effects": [{"kind": "vol", "from": 0, "to": 54, "mult": 0.95}]},
+        {"label": "株二番底", "p": 0.25, "effects": [{"kind": "drift", "from": 0, "to": 54, "total": -0.10}, {"kind": "vol", "from": 0, "to": 54, "mult": 1.3}]}
+      ]
+    },
+    {
+      "id": "clarity_act", "name": "市場構造法案（CLARITY）", "kind": "規制", "impact_size": "大",
+      "timing": {"window": ["2026-11-27", "2026-12-22"], "at_basis": "時期は未定。期間内でランダム"},
+      "p_basis": "判断", "p_reason": "既存試算の設定（廃案85%）を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "可決", "p": 0.05, "effects": [{"kind": "jump", "day": 0, "amt": 0.15, "noise": 0.03}]},
+        {"label": "再審議へ", "p": 0.10, "effects": [{"kind": "jump", "day": 0, "amt": 0.04, "noise": 0.012}]},
+        {"label": "廃案", "p": 0.85, "effects": []}
+      ]
+    },
+    {
+      "id": "trend_drift", "name": "下落トレンドの基調", "kind": "需給", "impact_size": "小",
+      "timing": {"from_start": true},
+      "p_basis": "判断", "p_reason": "既存試算の設定（55日で−3%）を引き継ぎ",
+      "impact_basis": "判断", "impact_reason": "既存試算の設定を引き継ぎ",
+      "outcomes": [
+        {"label": "続く", "p": 1.0, "effects": [{"kind": "drift", "from": 0, "to": 54, "total": -0.03}]}
+      ]
+    }
+  ]
+}
