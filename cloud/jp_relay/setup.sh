@@ -14,6 +14,13 @@ echo "=== 2/4 必要な機能を有効化（1〜2分） ==="
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com --quiet
 
 echo "=== 3/4 中継係を東京に配置（3〜5分） ==="
+# 新しいプロジェクトでは、ビルド係（既定のサービスアカウント）に権限が付いていないので付ける
+PN=$(gcloud projects describe "$PROJECT" --format='value(projectNumber)')
+gcloud projects add-iam-policy-binding "$PROJECT" \
+  --member="serviceAccount:${PN}-compute@developer.gserviceaccount.com" \
+  --role="roles/run.builder" --condition=None --quiet > /dev/null
+echo "権限を付けました。反映まで1分待ちます…"
+sleep 60
 TOKEN=$(openssl rand -hex 24)
 gcloud run deploy "$SERVICE" --source . --region "$REGION" \
   --allow-unauthenticated --set-env-vars "RELAY_TOKEN=$TOKEN" \
