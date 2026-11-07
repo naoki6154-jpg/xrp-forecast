@@ -1,0 +1,30 @@
+[
+ {
+  "calendar_id": "nfp_2026-11-06",
+  "facts_event_id": "nfp-2026-11-06",
+  "name": "米雇用統計（10月分）",
+  "released_at_jst": "2026-11-06T22:30:00+09:00",
+  "metric": "非農業部門雇用者数 前月差",
+  "actual": "165",
+  "consensus": "65",
+  "surprise": "100",
+  "unit": "千人",
+  "previous": "60",
+  "outcome_label": "強い",
+  "consensus_source": "Forex Fundamentals（二次情報）",
+  "consensus_url": "https://forexfundamentals.com/economic-calendar/nfp/2026-11-06",
+  "actual_source": "FRED/ALFRED PAYEMS（BLSの初回発表値）",
+  "recorded_at": "2026-11-08",
+  "note": "発表値・予想・前回値は facts/event_values.csv と同じ。失業率4.1%（前回4.2%）",
+  "xrp_1時間": -0.261,
+  "btc_1時間": -0.653,
+  "xrp_minus_btc_1時間": 0.392,
+  "xrp_4時間": -0.303,
+  "btc_4時間": -0.339,
+  "xrp_minus_btc_4時間": 0.036,
+  "xrp_1日": null,
+  "btc_1日": null,
+  "xrp_minus_btc_1日": null,
+  "reaction_basis": "Binance 1時間足（data/raw/prices/）。発表直前の正時の始値 → h時間後の最初の正時の始値（facts/reactions.csv と同じ）。空欄はデータ待ち（前日分まで）"
+ }
+]

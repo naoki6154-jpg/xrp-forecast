@@ -1,0 +1,552 @@
+{
+ "ledger/events": {
+  "at": "2026-11-08T06:42:58+09:00",
+  "by": "📰 イベント台帳チャット",
+  "reference_only": true,
+  "note": "参考表示：試運転（11/8〜11/14）が終わるまで予想の計算には使っていません。＊は判断で置いた確率（理由は ledger/calendar.json）。",
+  "market_snapshot": "Polymarket：data/raw/prediction_markets/polymarket_daily.csv（2026-11-07T11:32Z 取得）",
+  "items": [
+   {
+    "id": "cpi_2026-11-10",
+    "name": "米CPI（10月分）",
+    "kind": "経済指標",
+    "impact": "大",
+    "when": "2026-11-10T22:30:00+09:00",
+    "time_basis": "BLSの公表日程（8:30 ET）",
+    "consensus": [
+     {
+      "metric": "CPI 前月比",
+      "value": "+0.3%",
+      "previous": "+0.6%",
+      "source": "Calculated Risk「Economic Weekly November 6, 2026」（二次情報）",
+      "url": "https://economicweekly.substack.com/p/economic-weekly-november-6-2026",
+      "fetched_at": "2026-11-08"
+     },
+     {
+      "metric": "コアCPI 前月比",
+      "value": "+0.2%",
+      "previous": "+0.3%",
+      "source": "同上",
+      "url": "https://economicweekly.substack.com/p/economic-weekly-november-6-2026",
+      "fetched_at": "2026-11-08"
+     }
+    ],
+    "note": "2025年10月分が政府閉鎖で作られなかったため、今回は総合・コアとも前年比が公表されない見込み（RBCなどの解説）。前月比で判定する。",
+    "outcome_rule": "コアCPI前月比で判定（市場予想 +0.2%）：0.1%以下＝下振れ、0.2%＝予想通り、0.3%以上＝上振れ",
+    "outcomes": [
+     {
+      "label": "下振れ",
+      "p": 0.153
+     },
+     {
+      "label": "予想通り",
+      "p": 0.491
+     },
+     {
+      "label": "上振れ",
+      "p": 0.356
+     }
+    ],
+    "p_basis": "市場",
+    "p_source": "Polymarket「Core CPI MoM - October 2026」7区分を合計1に直して3つにまとめた（2026-11-07T11:32Z）",
+    "p_reason": "",
+    "source": "BLS CPI 公表日程",
+    "source_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": "cpi_2026-11-10"
+   },
+   {
+    "id": "ppi_2026-11-13",
+    "name": "米PPI（10月分）",
+    "kind": "経済指標",
+    "impact": "小",
+    "when": "2026-11-13T22:30:00+09:00",
+    "time_basis": "二次情報の日程（8:30 ET）。BLSの公表日程ページは未確認",
+    "consensus": [
+     {
+      "metric": "PPI 前月比",
+      "value": "+0.3%",
+      "previous": "",
+      "source": "Calculated Risk（二次情報）",
+      "url": "https://economicweekly.substack.com/p/economic-weekly-november-6-2026",
+      "fetched_at": "2026-11-08"
+     },
+     {
+      "metric": "コアPPI 前月比",
+      "value": "+0.3%",
+      "previous": "",
+      "source": "同上",
+      "url": "https://economicweekly.substack.com/p/economic-weekly-november-6-2026",
+      "fetched_at": "2026-11-08"
+     }
+    ],
+    "note": "日程はBLSの公表日程ページで未確認（二次情報）。",
+    "outcome_rule": "PPI前月比が予想（+0.3%）より下・同じ・上",
+    "outcomes": [
+     {
+      "label": "下振れ",
+      "p": 0.25
+     },
+     {
+      "label": "予想通り",
+      "p": 0.4
+     },
+     {
+      "label": "上振れ",
+      "p": 0.35
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "",
+    "p_reason": "前月比の予測市場がない（Polymarketは前年比のみ）。RBCが+0.5%と予想より高めを見込んでいることから上振れをやや厚くした。PPIの過去の予想との差は過去事実データベースに未収録",
+    "source": "Calculated Risk「Economic Weekly November 6, 2026」",
+    "source_url": "https://economicweekly.substack.com/p/economic-weekly-november-6-2026",
+    "checked_at": "2026-11-08",
+    "engine_id": null
+   },
+   {
+    "id": "nvda_2026-11-17",
+    "name": "エヌビディア決算（2027年度第3四半期）",
+    "kind": "決算",
+    "impact": "中",
+    "when": "2026-11-18T06:20:00+09:00",
+    "time_basis": "会社発表：11/17 13:20 PT ごろ決算公表、14:00 PT に説明会",
+    "consensus": [
+     {
+      "metric": "売上高",
+      "value": "1,088億ドル",
+      "previous": "962億ドル（前四半期）",
+      "source": "MarketBeat（eciks.org 経由、二次情報）",
+      "url": "https://eciks.org/29651-nvidia-fiscal-2027-q3-results",
+      "fetched_at": "2026-11-08"
+     },
+     {
+      "metric": "1株利益",
+      "value": "2.47ドル",
+      "previous": "",
+      "source": "同上",
+      "url": "https://eciks.org/29651-nvidia-fiscal-2027-q3-results",
+      "fetched_at": "2026-11-08"
+     }
+    ],
+    "note": "会社の見通しは売上高1,080億ドル±2%。予想エンジンの登録表は日付を11/20（推定）としているが、確定日は11/17（日本時間11/18早朝）。",
+    "outcome_rule": "売上高と次の四半期の見通しを合わせて判断",
+    "outcomes": [
+     {
+      "label": "好決算",
+      "p": 0.45
+     },
+     {
+      "label": "予想通り",
+      "p": 0.3
+     },
+     {
+      "label": "失望",
+      "p": 0.25
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "",
+    "p_reason": "予測市場が見つからない。同社は会社見通しを上回ることが多いが、株価の反応は見通し次第で割れやすいため、好決算を少し厚くするにとどめた",
+    "source": "NVIDIA IR（2026-10-28 発表）",
+    "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/default.aspx",
+    "checked_at": "2026-11-08",
+    "engine_id": "nvda_2026-11"
+   },
+   {
+    "id": "fomc_minutes_2026-11-18",
+    "name": "FOMC議事要旨（10月会合）",
+    "kind": "金融政策",
+    "impact": "小",
+    "when": "2026-11-19T04:00:00+09:00",
+    "time_basis": "FRBの決まり「定例会合の議事要旨は決定の3週間後」から計算（14:00 ET）。個別の日付はFRBのページに未掲載",
+    "consensus": [],
+    "note": "日付はFRBの決まり（決定の3週間後）から計算。",
+    "outcome_rule": "12月の利上げを支持する意見の多さ",
+    "outcomes": [
+     {
+      "label": "タカ派寄り",
+      "p": 0.35
+     },
+     {
+      "label": "中立",
+      "p": 0.5
+     },
+     {
+      "label": "ハト派寄り",
+      "p": 0.15
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "",
+    "p_reason": "議事要旨の予測市場はない。12月の利上げが予測市場で約77%織り込まれており、それを裏付ける内容がやや多いと見た",
+    "source": "FRB FOMC カレンダー",
+    "source_url": "https://federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": null
+   },
+   {
+    "id": "pce_2026-11-25",
+    "name": "米PCE物価（10月分）",
+    "kind": "経済指標",
+    "impact": "中",
+    "when": "2026-11-25T22:30:00+09:00",
+    "time_basis": "BEAの公表日程（8:30 ET）",
+    "consensus": [],
+    "note": "市場予想は未取得（発表の数日前に更新する）。翌11/26は米国の感謝祭で株式市場は休場。",
+    "outcome_rule": "コアPCE前月比：0.1%以下／0.2%／0.3%以上",
+    "outcomes": [
+     {
+      "label": "0.1%以下",
+      "p": 0.198
+     },
+     {
+      "label": "0.2%",
+      "p": 0.328
+     },
+     {
+      "label": "0.3%以上",
+      "p": 0.474
+     }
+    ],
+    "p_basis": "市場",
+    "p_source": "Polymarket「Core PCE MoM - October」7区分（合計が114%で薄商いのため、合計1に直した。2026-11-07T11:32Z）",
+    "p_reason": "",
+    "source": "BEA Release Schedule（Personal Income and Outlays, October 2026）",
+    "source_url": "https://www.bea.gov/index.php/news/schedule/next-year",
+    "checked_at": "2026-11-08",
+    "engine_id": null
+   },
+   {
+    "id": "nfp_2026-12-04",
+    "name": "米雇用統計（11月分）",
+    "kind": "経済指標",
+    "impact": "大",
+    "when": "2026-12-04T22:30:00+09:00",
+    "time_basis": "FREDの発表日（BLSの日程を反映）と8:30 ETの慣例。BLSの日程ページは未確認",
+    "consensus": [],
+    "note": "前回（10月分、11/6）は+16.5万人で予想+6.5万人を大きく上回った。",
+    "outcome_rule": "雇用者数の前月差が市場予想より5万人以上少ない＝弱い、±5万人以内＝予想通り、5万人以上多い＝強い",
+    "outcomes": [
+     {
+      "label": "弱い",
+      "p": 0.4
+     },
+     {
+      "label": "予想通り",
+      "p": 0.15
+     },
+     {
+      "label": "強い",
+      "p": 0.45
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "過去事実データベース facts/event_values.csv（直近12回：弱い5・予想通り0・強い7）",
+    "p_reason": "過去12回は全て予想との差が5万人以上（弱い5回・強い7回）。件数が少ないので、予想通りにも15%を残した",
+    "source": "FRED release/dates（release_id=50）",
+    "source_url": "https://raw.githubusercontent.com/naoki6154-jpg/xrp-forecast/main/data/raw/fred/release_dates_50.csv",
+    "checked_at": "2026-11-08",
+    "engine_id": "nfp_2026-12-04"
+   },
+   {
+    "id": "fomc_2026-12-09",
+    "name": "FOMC（12月、経済見通しあり）",
+    "kind": "金融政策",
+    "impact": "大",
+    "when": "2026-12-10T04:00:00+09:00",
+    "time_basis": "FRBの日程（12/8〜9）、声明は14:00 ET",
+    "consensus": [
+     {
+      "metric": "政策金利の上限",
+      "value": "4.25%（予測市場の最多）",
+      "previous": "4.00%（FRED DFEDTARU 2026-11-06）",
+      "source": "Polymarket",
+      "url": "https://polymarket.com/",
+      "fetched_at": "2026-11-07"
+     }
+    ],
+    "note": null,
+    "outcome_rule": "決定の内容",
+    "outcomes": [
+     {
+      "label": "利上げ",
+      "p": 0.772
+     },
+     {
+      "label": "据え置き",
+      "p": 0.215
+     },
+     {
+      "label": "利下げ",
+      "p": 0.013
+     }
+    ],
+    "p_basis": "市場",
+    "p_source": "Polymarket「December 2026 meeting」5区分を合計1に直した（利上げ＝25bp 76.6%＋50bp以上 0.6%）。2026-11-07T11:32Z",
+    "p_reason": "",
+    "source": "FRB FOMC カレンダー",
+    "source_url": "https://federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": "fomc_2026-12"
+   },
+   {
+    "id": "cpi_2026-12-10",
+    "name": "米CPI（11月分）",
+    "kind": "経済指標",
+    "impact": "大",
+    "when": "2026-12-10T22:30:00+09:00",
+    "time_basis": "BLSの公表日程（8:30 ET）。FOMCの結果の後に出る",
+    "consensus": [],
+    "note": "FOMCの結果（12/10 4:00）の後に出る。",
+    "outcome_rule": "コアCPIが市場予想より下・同じ・上",
+    "outcomes": [
+     {
+      "label": "下振れ",
+      "p": 0.35
+     },
+     {
+      "label": "予想通り",
+      "p": 0.39
+     },
+     {
+      "label": "上振れ",
+      "p": 0.26
+     }
+    ],
+    "p_basis": "実績",
+    "p_source": "過去事実データベース facts/event_values.csv：コアCPI前年比の予想との差（2024-11〜2026-10、23回：下振れ8・一致9・上振れ6）",
+    "p_reason": "予測市場がまだない。発表が近づいたら予測市場に切り替える",
+    "source": "BLS CPI 公表日程",
+    "source_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": "cpi_2026-12-10"
+   },
+   {
+    "id": "boj_2026-12-18",
+    "name": "日銀 金融政策決定会合（12月）",
+    "kind": "金融政策",
+    "impact": "中",
+    "when": "2026-12-18T12:00:00+09:00",
+    "time_basis": "日銀の日程（12/17〜18）。結果の公表時刻は決まっていない（昼ごろが多い）。総裁会見は12/18",
+    "consensus": [
+     {
+      "metric": "政策金利",
+      "value": "",
+      "previous": "1.25%（10/30据え置き）",
+      "source": "ピクテ（2026-11-02）",
+      "url": "https://www.pictet.co.jp/investment-information/market/today/20261102.html",
+      "fetched_at": "2026-11-08"
+     }
+    ],
+    "note": "会合は12/17〜18。結果の公表時刻は決まっていない（昼ごろが多い）。",
+    "outcome_rule": "利上げ（1.5%）か据え置きか",
+    "outcomes": [
+     {
+      "label": "据え置き",
+      "p": 0.45
+     },
+     {
+      "label": "利上げ",
+      "p": 0.55
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "",
+    "p_reason": "予測市場・OISの確率は未取得。10月会合で高田委員が1.5%への利上げを提案（反対票）、野村證券は9/24時点で12月利上げを中心シナリオ（確率60%）としている。それらを参考に利上げをやや多めにした",
+    "source": "日本銀行 金融政策決定会合の運営",
+    "source_url": "https://www.boj.or.jp/mopo/mpmsche_minu/index.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": "boj_2026-12"
+   },
+   {
+    "id": "pce_2026-12-23",
+    "name": "米PCE物価（11月分）",
+    "kind": "経済指標",
+    "impact": "中",
+    "when": "2026-12-23T22:30:00+09:00",
+    "time_basis": "BEAの公表日程（8:30 ET）",
+    "consensus": [],
+    "note": null,
+    "outcome_rule": "コアPCEが市場予想より下・同じ・上",
+    "outcomes": [
+     {
+      "label": "下振れ",
+      "p": 0.3
+     },
+     {
+      "label": "予想通り",
+      "p": 0.4
+     },
+     {
+      "label": "上振れ",
+      "p": 0.3
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "",
+    "p_reason": "予想・予測市場ともまだない。偏りを置く根拠がないので上下を同じにした。過去事実データベースにPCEの市場予想がない",
+    "source": "BEA Release Schedule（Personal Income and Outlays, November 2026）",
+    "source_url": "https://bea.gov/newsreleases/2017rd.htm",
+    "checked_at": "2026-11-08",
+    "engine_id": null
+   },
+   {
+    "id": "clarity_lameduck_2026",
+    "name": "市場構造法案（CLARITY）の年内成立",
+    "kind": "規制",
+    "impact": "大",
+    "when": "2026-11-16〜2026-12-31",
+    "time_basis": "中間選挙後の会期（レームダック）。今の議会は2027-01-03に終わり、成立しなければ出し直し",
+    "consensus": [],
+    "note": "9/15の上院の手続き投票は49対50で否決。11/3の中間選挙で民主党が上下両院を制したと報道（NBCの予測）。",
+    "outcome_rule": "12/31までに署名され成立するか",
+    "outcomes": [
+     {
+      "label": "成立",
+      "p": 0.05
+     },
+     {
+      "label": "不成立",
+      "p": 0.95
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "Polymarket「Clarity Act signed into law in 2026?」は9月の否決後6.5%（coinalertnews 11/4 の報道、二次情報）",
+    "p_reason": "予測市場の最新値を直接取れていない。否決後の6.5%から、民主党の両院勝利でさらに下がったと見て5%とした。予測市場の取得先に追加してもらえれば「市場」に切り替える",
+    "source": "Congress.gov H.R.3633（成立の判定元）",
+    "source_url": "https://www.congress.gov/bill/119th-congress/house-bill/3633",
+    "checked_at": "2026-11-08",
+    "engine_id": "clarity_act"
+   },
+   {
+    "id": "iran_2026",
+    "name": "イラン情勢（ホルムズ海峡）",
+    "kind": "地政学",
+    "impact": "大",
+    "when": "2026-11-08〜2026-12-31",
+    "time_basis": "時期は未定",
+    "consensus": [],
+    "note": "海峡は7/14から閉じたまま。カタールの仲介で協議が続く一方、11/7に米軍がイランの防空施設を攻撃したと報道。イランは7つの条件をのむまで海峡を開けないとしている。",
+    "outcome_rule": "年末までに、合意して海峡の通航が戻る／協議と散発的な攻撃が続く／戦闘が大きく広がる",
+    "outcomes": [
+     {
+      "label": "合意・通航再開",
+      "p": 0.12
+     },
+     {
+      "label": "現状が続く",
+      "p": 0.68
+     },
+     {
+      "label": "戦闘の再拡大",
+      "p": 0.2
+     }
+    ],
+    "p_basis": "判断",
+    "p_source": "Polymarket「Strait of Hormuz traffic returns to normal by December 31?」約12%（Manifoldの転載、取得日不明・二次情報）",
+    "p_reason": "予測市場の最新値を直接取れていない。転載値の約12%を合意側に使い、再拡大は11/7の攻撃を受けて20%とした（判断）",
+    "source": "Al Jazeera（2026-11-01）／Outlook India（2026-11-07）",
+    "source_url": "https://www.aljazeera.com/news/2026/11/1/iran-and-us-explore-diplomacy-amid-rising-threats-of-war",
+    "checked_at": "2026-11-08",
+    "engine_id": "iran"
+   }
+  ],
+  "results": [
+   {
+    "name": "米雇用統計（10月分）",
+    "at": "2026-11-06T22:30:00+09:00",
+    "metric": "非農業部門雇用者数 前月差",
+    "actual": "165",
+    "consensus": "65",
+    "surprise": "100",
+    "unit": "千人",
+    "outcome": "強い",
+    "xrp_1h": -0.261,
+    "xrp_4h": -0.303,
+    "xrp_1d": null,
+    "btc_1d": null,
+    "source": "FRED/ALFRED PAYEMS（BLSの初回発表値）"
+   }
+  ]
+ },
+ "ledger/news": {
+  "at": "2026-11-08T06:42:58+09:00",
+  "by": "📰 イベント台帳チャット",
+  "reference_only": true,
+  "items": [
+   {
+    "date": "2026-11-07",
+    "headline": "米軍がイランの防空施設を攻撃、カタールは合意案で仲介を続ける",
+    "category": "地政学",
+    "direction": "逆風",
+    "why": "ホルムズ海峡の再開が遠のき、原油高・利上げ観測につながりやすい",
+    "source": "Outlook India",
+    "url": "https://www.outlookindia.com/international/us-iran-war-latest-us-strikes-qatar-nuclear-talks-strait-of-hormuz"
+   },
+   {
+    "date": "2026-11-07",
+    "headline": "イラン軍報道官：米国が7つの条件をのむまでホルムズ海峡は開けない",
+    "category": "地政学",
+    "direction": "逆風",
+    "why": "海峡の閉鎖は7/14から続いている",
+    "source": "House of Saud",
+    "url": "https://houseofsaud.com/iran-hormuz-no-backing-down-nov7/"
+   },
+   {
+    "date": "2026-11-06",
+    "headline": "米雇用統計（10月分）：雇用者数+16.5万人で予想（+6.5万人）を大きく上回る、失業率4.1%",
+    "category": "経済指標",
+    "direction": "逆風",
+    "why": "12月の利上げを後押しする内容（予測市場の利上げ確率は約77%）",
+    "source": "FRED（BLSの初回発表値）／予想は Forex Fundamentals",
+    "url": "https://forexfundamentals.com/economic-calendar/nfp/2026-11-06"
+   },
+   {
+    "date": "2026-11-05",
+    "headline": "10月のCPIは前年比が出ない見込み（前年の10月分が政府閉鎖で作られなかったため）。予想は総合+0.3%・コア+0.2%（前月比）",
+    "category": "経済指標",
+    "direction": "中立",
+    "why": "11/10の判定は前月比で行う",
+    "source": "StockTitan（RBCの解説を引用）",
+    "url": "https://www.stocktitan.net/articles/october-2026-cpi-preview-no-yearly-rate"
+   },
+   {
+    "date": "2026-11-04",
+    "headline": "中間選挙で民主党が上下両院を制したと報道。CLARITY法案は年内（1/3まで）の会期が最後の機会に",
+    "category": "規制",
+    "direction": "逆風",
+    "why": "法案の年内成立がさらに難しくなった。来年以降は作り直しになる可能性",
+    "source": "Bitcoin Foundation",
+    "url": "https://bitcoinfoundation.org/news/regulation/clarity-act-faces-january-3-deadline-after-democrats-win-congress/"
+   },
+   {
+    "date": "2026-11-02",
+    "headline": "Binanceから盗まれたXRP約2億3,346万枚が、6つの新しいアドレスへ移動",
+    "category": "銘柄固有",
+    "direction": "逆風",
+    "why": "売却されれば売り圧力になる。追跡中の残高は約1億3,793万XRP（11/7）",
+    "source": "XRPレジャー（このシステムで取得）",
+    "url": "https://livenet.xrpl.org/accounts/rK21t6nGLy4MNDqhvy3pGwcLFy25qgfzMx"
+   },
+   {
+    "date": "2026-10-30",
+    "headline": "日銀が政策金利1.25%を据え置き。高田委員は1.5%への利上げを提案し反対",
+    "category": "金融政策",
+    "direction": "中立",
+    "why": "12月の利上げの可能性が残る（円高要因）",
+    "source": "ピクテ",
+    "url": "https://www.pictet.co.jp/investment-information/market/today/20261102.html"
+   },
+   {
+    "date": "2026-10-28",
+    "headline": "エヌビディアが決算発表日を11/17（日本時間11/18早朝）に決定",
+    "category": "決算",
+    "direction": "中立",
+    "why": "米国株とリスク資産全体の地合いを左右しやすい",
+    "source": "NVIDIA IR",
+    "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/default.aspx"
+   }
+  ]
+ }
+}

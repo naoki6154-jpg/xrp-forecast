@@ -1,0 +1,2 @@
+calendar_id,facts_event_id,name,released_at_jst,metric,actual,consensus,surprise,unit,previous,outcome_label,consensus_source,consensus_url,actual_source,recorded_at,note
+nfp_2026-11-06,nfp-2026-11-06,米雇用統計（10月分）,2026-11-06T22:30:00+09:00,非農業部門雇用者数 前月差,165,65,100,千人,60,強い,Forex Fundamentals（二次情報）,https://forexfundamentals.com/economic-calendar/nfp/2026-11-06,FRED/ALFRED PAYEMS（BLSの初回発表値）,2026-11-08,発表値・予想・前回値は facts/event_values.csv と同じ。失業率4.1%（前回4.2%）

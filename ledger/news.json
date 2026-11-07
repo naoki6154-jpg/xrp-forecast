@@ -1,0 +1,14 @@
+{
+  "_note": "直近の重要ニュース（参考表示）。見出しと要約はこちらで書き直したもの。direction：XRPにとって 追い風／逆風／中立（判断）。新しい順。",
+  "updated_at": "2026-11-08T08:30:00+09:00",
+  "items": [
+    {"date": "2026-11-07", "headline": "米軍がイランの防空施設を攻撃、カタールは合意案で仲介を続ける", "category": "地政学", "direction": "逆風", "why": "ホルムズ海峡の再開が遠のき、原油高・利上げ観測につながりやすい", "source": "Outlook India", "url": "https://www.outlookindia.com/international/us-iran-war-latest-us-strikes-qatar-nuclear-talks-strait-of-hormuz"},
+    {"date": "2026-11-07", "headline": "イラン軍報道官：米国が7つの条件をのむまでホルムズ海峡は開けない", "category": "地政学", "direction": "逆風", "why": "海峡の閉鎖は7/14から続いている", "source": "House of Saud", "url": "https://houseofsaud.com/iran-hormuz-no-backing-down-nov7/"},
+    {"date": "2026-11-06", "headline": "米雇用統計（10月分）：雇用者数+16.5万人で予想（+6.5万人）を大きく上回る、失業率4.1%", "category": "経済指標", "direction": "逆風", "why": "12月の利上げを後押しする内容（予測市場の利上げ確率は約77%）", "source": "FRED（BLSの初回発表値）／予想は Forex Fundamentals", "url": "https://forexfundamentals.com/economic-calendar/nfp/2026-11-06"},
+    {"date": "2026-11-05", "headline": "10月のCPIは前年比が出ない見込み（前年の10月分が政府閉鎖で作られなかったため）。予想は総合+0.3%・コア+0.2%（前月比）", "category": "経済指標", "direction": "中立", "why": "11/10の判定は前月比で行う", "source": "StockTitan（RBCの解説を引用）", "url": "https://www.stocktitan.net/articles/october-2026-cpi-preview-no-yearly-rate"},
+    {"date": "2026-11-04", "headline": "中間選挙で民主党が上下両院を制したと報道。CLARITY法案は年内（1/3まで）の会期が最後の機会に", "category": "規制", "direction": "逆風", "why": "法案の年内成立がさらに難しくなった。来年以降は作り直しになる可能性", "source": "Bitcoin Foundation", "url": "https://bitcoinfoundation.org/news/regulation/clarity-act-faces-january-3-deadline-after-democrats-win-congress/"},
+    {"date": "2026-11-02", "headline": "Binanceから盗まれたXRP約2億3,346万枚が、6つの新しいアドレスへ移動", "category": "銘柄固有", "direction": "逆風", "why": "売却されれば売り圧力になる。追跡中の残高は約1億3,793万XRP（11/7）", "source": "XRPレジャー（このシステムで取得）", "url": "https://livenet.xrpl.org/accounts/rK21t6nGLy4MNDqhvy3pGwcLFy25qgfzMx"},
+    {"date": "2026-10-30", "headline": "日銀が政策金利1.25%を据え置き。高田委員は1.5%への利上げを提案し反対", "category": "金融政策", "direction": "中立", "why": "12月の利上げの可能性が残る（円高要因）", "source": "ピクテ", "url": "https://www.pictet.co.jp/investment-information/market/today/20261102.html"},
+    {"date": "2026-10-28", "headline": "エヌビディアが決算発表日を11/17（日本時間11/18早朝）に決定", "category": "決算", "direction": "中立", "why": "米国株とリスク資産全体の地合いを左右しやすい", "source": "NVIDIA IR", "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/default.aspx"}
+  ]
+}
