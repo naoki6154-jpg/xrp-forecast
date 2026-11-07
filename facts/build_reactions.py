@@ -43,6 +43,17 @@ def load_1d(sym):
     return out
 
 
+def load_bitbank_1d():
+    """XRP/円の日足（bitbank、2018-01〜）。BinanceにXRPがない2018年5月より前の代わりに使う。"""
+    out = {}
+    with open(os.path.join(PRICES, "bitbank_xrp_jpy_1d.csv"), newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r.get("partial") == "1":
+                continue
+            out[r["date"]] = (float(r["open"]), float(r["high"]), float(r["low"]), float(r["close"]))
+    return out
+
+
 def iso(t):
     return t.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -103,6 +114,7 @@ def main():
     build_manual.main()
     apply_consensus.main()
     x1h, b1h, x1d, b1d = load_1h("xrp"), load_1h("btc"), load_1d("xrp"), load_1d("btc")
+    xjpy = load_bitbank_1d()
     with open(os.path.join(FACTS, "events.csv"), newline="", encoding="utf-8") as f:
         events = list(csv.DictReader(f))
     rows = []
@@ -111,12 +123,24 @@ def main():
                       event_time_utc=e["datetime_utc"] or e["date_et"])
         if e["datetime_utc"]:
             t = datetime.strptime(e["datetime_utc"], "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
-            for name, h in HORIZONS_H:
-                rows.append(dict(common, basis="時刻あり（1時間足）", horizon=name, **hourly(t, h, x1h, b1h)))
+            hr = [dict(common, basis="時刻あり（1時間足）", horizon=name, **hourly(t, h, x1h, b1h)) for name, h in HORIZONS_H]
+            if any(r["xrp_ret_pct"] for r in hr) or iso(t) >= "2018-05-05":
+                rows += hr
+            else:
+                # BinanceにXRPのデータがない期間：bitbankのXRP/円の日足で代わりに計算
+                d = datetime.strptime(e["date_et"], "%Y-%m-%d").date()
+                for name, n in HORIZONS_D:
+                    r = daily(d, n, xjpy, b1d)
+                    r["price_source"] = "XRPは bitbank XRP/円 日足（BinanceにXRPがない期間の代わり）、BTCは Binance 日足"
+                    rows.append(dict(common, basis="日付のみ（日足、代わりの取得先）", horizon=name, **r))
         else:
             d = datetime.strptime(e["date_et"], "%Y-%m-%d").date()
+            src = x1d if e["date_et"] >= "2018-05-06" else xjpy
             for name, n in HORIZONS_D:
-                rows.append(dict(common, basis="日付のみ（日足）", horizon=name, **daily(d, n, x1d, b1d)))
+                r = daily(d, n, src, b1d)
+                if src is xjpy:
+                    r["price_source"] = "XRPは bitbank XRP/円 日足（BinanceにXRPがない期間の代わり）、BTCは Binance 日足"
+                rows.append(dict(common, basis="日付のみ（日足）", horizon=name, **r))
     with open(os.path.join(FACTS, "reactions.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
