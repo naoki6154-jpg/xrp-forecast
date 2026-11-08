@@ -250,7 +250,7 @@ def main():
             r_ = "中"
         why = ["方向：運用中の採点 %d件（30件以上でブライアスコアが基準以下なら「中」）" % n]
         if bx:
-            why.append("過去検証（%d件、モデルB・C・Dの混合）：80%%範囲の的中率 %.0f%%、上がる確率の誤差 %.3f（基準 %.3f）" % (bx["n"], bx["in80"] * 100, bx["brier"], bx["brier_base"]))
+            why.append("過去検証（%d件、モデルB・C・D・Tの混合）：80%%範囲の的中率 %.0f%%、上がる確率の誤差 %.3f（基準 %.3f）" % (bx["n"], bx["in80"] * 100, bx["brier"], bx["brier_base"]))
         if n:
             why.append("運用中：方向の当たり %.0f%%、80%%範囲 %.0f%%、ブライアスコア %.3f" % (live["dir"] * 100, live["in80"] * 100, live["brier"]))
         return d, r_, why, live
@@ -465,8 +465,8 @@ def main():
                         "モデルB：今と似た過去の日（7日・30日の騰落率、200日線からの乖離、30日の変動率、恐怖強欲指数）の、その後の値動き",
                         "モデルC：Deribitの予想変動率（満期ごと）による、方向の偏りのない分布",
                         "モデルD：過去の同じ時期の値動き（4年サイクルの位置が同じ年は重み2倍）。件数が少ない",
-                        "重み A:B:C:D = 2:2:2:1（設計書第6章の比率で、Aの重みをCと同じに抑えたもの）",
-                        "上がる確率は、過去検証（モデルB・C・D）で作った較正（engine/calibration.json）で補正した値。補正前の値も記録",
+                        "重み A:B:C:D:T = 2:2:2:1:2（モデルT：テクニカル指標のパターン）",
+                        "上がる確率は、過去検証（モデルB・C・D・T）で作った較正（engine/calibration.json）で補正した値。補正前の値も記録",
                         "モデルE（機械学習）は前進型の検証で基準を上回るまで重み0（参考表示）"],
     }
     os.makedirs(os.path.join(ROOT, "forecasts"), exist_ok=True)
@@ -486,8 +486,15 @@ def main():
                    "fx": fx0, "fx_source": fx["source"]},
         "fallbacks": fallbacks,
         "forecast": {"items": [{k: v for k, v in f.items() if k != "models"} | {"p" + m: f["models"][m]["p_up_jpy"] for m in f["models"]} for f in forecasts],
-        "touch": touch, "bottom": bottom, "iv": model_info["iv"], "strategies": strat, "scenarios": scenarios,
-                     "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": [{kk: vv for kk, vv in x.items()} for x in infoT]}) if tech else None,
+        "touch": touch, "bottom": bottom, "iv": model_info["iv"], "strategies": strat,
+                     "scenarios": {"events": scenarios["events"], "groups": scenarios["groups"], "note": scenarios["note"],
+                                   "combos": [{"conditions": [{"outcome": x["outcome"]} for x in c_["conditions"]], "share": c_["share"], "p_up_ye": c_["p_up_ye"],
+                                               "median_ye_jpy": c_["median_ye_jpy"]} for c_ in scenarios["combos"][:12]]},
+                     "technicals": ({"date": tech.get("date"), "composite": tech.get("composite"), "values": tech.get("values"),
+                                     "items": [{"name": x["name"], "state": x["state"], "signal": x["signal"], "how": x["how"],
+                                                "stats": {"30": x["stats"].get("30")} if x["stats"] else {}} for x in tech.get("items", [])],
+                                     "model_t": [{kk: vv for kk, vv in x.items() if kk != "dates" or i_ == 0} for i_, x in enumerate(infoT[:1])],
+                                     "error": tech.get("error")}) if tech else None,
                      "model_e": {"features": model_e.get("features"), "rule": model_e.get("rule"), "error": model_e.get("error"),
                                  "per_h": {k: {kk: vv for kk, vv in v.items() if kk != "walk_forward"} for k, v in (model_e.get("per_h") or {}).items()}},
                      "model_b": {"features": model_info["B"]["features"], "dates": infoB[1]["dates"] if len(infoB) > 1 else [], "k": infoB[0]["k"]},
