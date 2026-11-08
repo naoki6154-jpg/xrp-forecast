@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-08T22:36:55Z",
+  "updated_at": "2026-11-08T22:43:26Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得が稼働（毎時：Binance・Bybit〈東京経由〉・OKX、1日2回：全8取得先）。過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-08T22:36:55Z",
+      "fetched_at": "2026-11-08T22:42:41Z",
       "error": "",
       "rows": 3234,
       "added": 0,
@@ -15,34 +15,34 @@
     },
     "kraken": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:16Z",
+      "fetched_at": "2026-11-08T22:42:42Z",
       "error": "",
       "rows": 2888,
-      "added": 4,
+      "added": 0,
       "last": "2026-11-08",
       "note": "XRP:722行, BTC:722行, ETH:722行, XLM:722行"
     },
     "binance_vision": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:21Z",
+      "fetched_at": "2026-11-08T22:42:47Z",
       "error": "",
       "rows": 12659,
-      "added": 4,
+      "added": 0,
       "last": "2026-11-07",
       "note": "XRP:3110行, BTC:3233行, ETH:3233行, XLM:3083行"
     },
     "fear_greed": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:29Z",
+      "fetched_at": "2026-11-08T22:42:58Z",
       "error": "",
       "rows": 3199,
-      "added": 1,
+      "added": 0,
       "last": "2026-11-08",
       "note": ""
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-08T22:36:54Z",
+      "fetched_at": "2026-11-08T22:43:01Z",
       "error": "",
       "rows": 1294,
       "added": 0,
@@ -51,43 +51,43 @@
     },
     "fred": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:42Z",
+      "fetched_at": "2026-11-08T22:43:12Z",
       "error": "",
-      "rows": 39852,
-      "added": 0,
-      "last": "2026-11-07",
+      "rows": 39854,
+      "added": 2,
+      "last": "2026-11-08",
       "note": "16系列＋初回発表値6系列＋発表日3種"
     },
     "polymarket": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:43Z",
+      "fetched_at": "2026-11-08T22:43:13Z",
       "error": "",
-      "rows": 1346,
-      "added": 662,
+      "rows": 1380,
+      "added": 34,
       "last": "2026-11-08",
-      "note": "本日 662市場"
+      "note": "本日 631市場"
     },
     "jp_relay": {
       "ok": true,
-      "fetched_at": "2026-11-08T22:36:51Z",
+      "fetched_at": "2026-11-08T22:43:14Z",
       "error": "",
-      "rows": 1692,
+      "rows": 1700,
       "added": 8,
       "last": "2026-11-08",
       "note": "全項目取得"
     },
     "binance_vision_1h": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:26Z",
+      "fetched_at": "2026-11-08T22:42:53Z",
       "error": "",
       "rows": 152017,
-      "added": 48,
+      "added": 0,
       "last": "2026-11-07",
       "note": "XRP:74545行, BTC:77472行"
     },
     "binance_funding_hist": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:29Z",
+      "fetched_at": "2026-11-08T22:42:58Z",
       "error": "",
       "rows": 14960,
       "added": 0,
@@ -96,25 +96,25 @@
     },
     "deribit": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:45Z",
+      "fetched_at": "2026-11-08T22:43:15Z",
       "error": "",
-      "rows": 2858,
-      "added": 424,
+      "rows": 2876,
+      "added": 18,
       "last": "2026-11-08",
-      "note": "XRPオプション 422銘柄"
+      "note": "XRPオプション 440銘柄"
     },
     "stablecoins": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:45Z",
+      "fetched_at": "2026-11-08T22:43:16Z",
       "error": "",
       "rows": 9515,
-      "added": 3,
+      "added": 0,
       "last": "2026-11-08",
       "note": "全体（all）・USDT・USDC"
     },
     "etf_flows": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:46Z",
+      "fetched_at": "2026-11-08T22:43:18Z",
       "error": "",
       "rows": 1312,
       "added": 0,
@@ -123,13 +123,13 @@
     },
     "xrpl": {
       "ok": true,
-      "fetched_at": "2026-11-08T10:53:51Z",
+      "fetched_at": "2026-11-08T22:43:26Z",
       "error": "",
-      "rows": 215,
-      "added": 14,
+      "rows": 281,
+      "added": 66,
       "last": "2026-11-08",
-      "note": "追跡アドレス 8件、その残高の合計 129,455,020 XRP（エスクローはアドレス未確認のため未取得）"
+      "note": "追跡アドレス 8件、その残高の合計 115,402,412 XRP（エスクローはアドレス未確認のため未取得）"
     }
   },
-  "last_fetch_run": "2026-11-08T22:36:51Z"
+  "last_fetch_run": "2026-11-08T22:42:40Z"
 }
