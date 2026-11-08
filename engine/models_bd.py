@@ -61,8 +61,8 @@ def model_b(df, steps, n, seed, sig_now, k=60, gap=5, exclude_recent=60, jitter=
     return np.stack(out, axis=1), info, {c: float(now[c]) for c in cols}
 
 
-def model_d(df, now_date, steps, n, seed, sig_now, cycle_years=(2), jitter=0.3):
-    """過去の各年の「同じ月日から steps 日後まで」の値動きを標本にする。今年と4年サイクルの位置が同じ年（年を4で割った余りが同じ）は重み2倍。"""
+def model_d(df, now_date, steps, n, seed, sig_now, jitter=0.8):
+    """過去の各年の「同じ月日から steps 日後まで」の値動きを標本にする。件数が少ないので、ばらつき（jitter）を過去検証で80%範囲の的中率が約80%になる0.8に広げた（2026-11-08、reports/backtest.md）。今年と4年サイクルの位置が同じ年（年を4で割った余りが同じ）は重み2倍。"""
     rng = np.random.default_rng(seed)
     logc = np.log(df["close"])
     years = sorted({d.year for d in df.index})

@@ -54,8 +54,16 @@ def compile_events(events, now_jst, T, fed):
             else:
                 probs = ev.get("p_fallback", probs)
                 e["p_used_basis"] = "判断"
+        if e.get("fixed_outcome"):
+            labels = [o["label"] for o in ev["outcomes"]]
+            if e["fixed_outcome"] in labels:
+                probs = [1.0 if l == e["fixed_outcome"] else 0.0 for l in labels]
+                e["p_used_basis"] = "結果確定"
         s = sum(probs)
         e["probs"] = [p / s for p in probs]
+        if e.get("neutral_jump"):
+            import events_sync
+            events_sync.renormalize_neutral(e, e["probs"])
         out.append(e)
     return out, skipped
 
