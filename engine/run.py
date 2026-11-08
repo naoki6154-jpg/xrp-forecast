@@ -23,10 +23,11 @@ import events_sync as ES
 import weekly as WK
 import model_e as ME
 import alerts as AL
+import technicals as TA
 import pandas as pd
 
 JST = I.JST
-ENGINE_VERSION = "1.2.0"
+ENGINE_VERSION = "1.3.0"
 Q = (10, 25, 50, 75, 90)
 
 
@@ -134,8 +135,10 @@ def main():
 
     N = cfg["paths"]["night" if a.mode == "night" else "morning"]
     CH = cfg["chunk"]
-    W = cfg["weights"]; wsum = sum(W[k] for k in "ABCD")
-    nA = int(round(N * W["A"] / wsum)); nB = int(round(N * W["B"] / wsum)); nD = int(round(N * W["D"] / wsum)); nC = N - nA - nB - nD
+    W = cfg["weights"]; MS = [m for m in "ABCDT" if W.get(m)]
+    wsum = sum(W[k] for k in MS)
+    nA = int(round(N * W["A"] / wsum)); nB = int(round(N * W["B"] / wsum)); nD = int(round(N * W["D"] / wsum)); nT = int(round(N * W.get("T", 0) / wsum))
+    nC = N - nA - nB - nD - nT
     s0u, s0j, fx0 = usd["price"], jpy["price"], jpy["price"] / usd["price"]
     dl_idx = [x["steps"] - 1 for x in hz if x["id"] in ("1w", "1m", "ye")]
 
@@ -181,7 +184,29 @@ def main():
     sq = np.sqrt(np.array(steps, dtype=np.float32))[None, :]
     UB = s0u * np.exp(rB); JB = UB * fx0 * np.exp(fxv * sq * rngfx.standard_normal(UB.shape).astype(np.float32))
     UD = s0u * np.exp(rD); JD = UD * fx0 * np.exp(fxv * sq * rngfx.standard_normal(UD.shape).astype(np.float32))
-    UE, JE = np.concatenate([UA, UB, UC, UD]), np.concatenate([JA, JB, JC, JD])
+    # モデルT：テクニカル指標の状態の組み合わせから（engine/technicals.py）
+    tech = None
+    try:
+        ob = pd.read_csv(os.path.join(ROOT, "data/raw/prices/binance_xrp_usdt_1d.csv"))
+        ob.index = pd.to_datetime(ob.date)
+        ob = ob[["open", "high", "low", "close", "volume"]].astype(float)
+
+        def fred(n_):
+            fp = os.path.join(ROOT, "data/raw/fred/%s.csv" % n_)
+            if not os.path.exists(fp):
+                return None
+            d_ = pd.read_csv(fp)
+            return pd.Series(pd.to_numeric(d_["value"], errors="coerce").values, index=pd.to_datetime(d_.date)).dropna()
+        TX = TA.compute(ob, fgs, fred("NASDAQCOM"), fred("DTWEXBGS"), fred("VIXCLS"))
+        tech = TA.analyze(TX, TX.close)
+        rT, infoT = TA.model_t(TX, tech["states"], TX.close, steps, max(nT, 1), seed * 10 + 6000, target)
+        rT = rT[:nT]
+    except Exception as ex:
+        tech = {"error": str(ex)}
+        rT, infoT = np.zeros((0, len(steps)), np.float32), []
+        nT = 0
+    UT = s0u * np.exp(rT); JT = UT * fx0 * np.exp(fxv * sq * rngfx.standard_normal(UT.shape).astype(np.float32))
+    UE, JE = np.concatenate([UA, UB, UC, UD, UT]), np.concatenate([JA, JB, JC, JD, JT])
     fanE = np.concatenate([fanA, fanC])
 
     bt = coverage_backtest(close, cfg)
@@ -234,6 +259,8 @@ def main():
         e = summarize(UE[:, i], JE[:, i], s0u, s0j)
         ms_ = {"A": summarize(UA[:, i], JA[:, i], s0u, s0j), "B": summarize(UB[:, i], JB[:, i], s0u, s0j),
                "C": summarize(UC[:, i], JC[:, i], s0u, s0j), "D": summarize(UD[:, i], JD[:, i], s0u, s0j)}
+        if nT:
+            ms_["T"] = summarize(UT[:, i], JT[:, i], s0u, s0j)
         ps = [v["p_up_jpy"] for v in ms_.values()]
         lo = min(min(ps), e["p_up_jpy"] - 0.03); hi = max(max(ps), e["p_up_jpy"] + 0.03)
         spread = max(ps) - min(ps)
@@ -365,16 +392,72 @@ def main():
                        "impact_size": "大" if swing >= 0.25 else "中" if swing >= 0.10 else "小"})
     ev_out.sort(key=lambda x: x["when"])
 
+    # ---------- 分岐のシナリオ（もし〜なら）：モデルAの道筋を、影響の大きいイベントの結果の組み合わせで分ける ----------
+    def qstat(m):
+        x = JA[m, yi]
+        return {"share": float(m.mean()), "p_up_ye": float((x > s0j).mean()), "median_ye_jpy": float(np.median(x)),
+                "q10_ye_jpy": float(np.percentile(x, 10)), "q90_ye_jpy": float(np.percentile(x, 90)),
+                "p_up_1w": float((JA[m, 1] > s0j).mean()) if JA.shape[1] > 1 else None,
+                "p_up_1m": float((JA[m, 2] > s0j).mean()) if JA.shape[1] > 2 else None}
+    # 結果ごとの条件付き予想（全期間）
+    for e_ in ev_out:
+        f = FA.get(e_["id"])
+        for oi, r in enumerate(e_["outcomes"]):
+            m = f == oi
+            if m.mean() >= 0.005:
+                r.update(qstat(m))
+    cand = [e_ for e_ in sorted(ev_out, key=lambda x: -x["swing_p_up_ye"] * (1 - max(r["share"] for r in x["outcomes"]))) if sum(1 for r in e_["outcomes"] if r["share"] >= 0.01) >= 2]
+    tree_ev = cand[:3]
+    combos = []
+    if tree_ev:
+        key = np.zeros(len(JA), np.int64)
+        for e_ in tree_ev:
+            key = key * 10 + FA[e_["id"]].astype(np.int64)
+        uk, inv = np.unique(key, return_inverse=True)
+        for j, kk in enumerate(uk):
+            m = inv == j
+            if m.mean() < 0.003:
+                continue
+            digits = [int(c_) for c_ in str(kk).zfill(len(tree_ev))]
+            cond = [{"event": e_["name"], "outcome": e_["outcomes"][d]["label"]} for e_, d in zip(tree_ev, digits)]
+            combos.append({"conditions": cond, **qstat(m)})
+        combos.sort(key=lambda x: -x["share"])
+    # 強気・基本・弱気：組み合わせを年末の中央値の順に並べ、下位25%・上位25%（確率の累計）で分ける
+    groups = []
+    if combos:
+        srt = sorted(combos, key=lambda x: x["median_ye_jpy"])
+        tot = sum(c_["share"] for c_ in srt); cum = 0.0
+        lab = []
+        for c_ in srt:
+            mid = (cum + c_["share"] / 2) / tot
+            lab.append("弱気" if mid < 0.25 else "強気" if mid > 0.75 else "基本")
+            cum += c_["share"]
+        for g in ("強気", "基本", "弱気"):
+            mem = [c_ for c_, l_ in zip(srt, lab) if l_ == g]
+            if not mem:
+                continue
+            w_ = np.array([c_["share"] for c_ in mem])
+            groups.append({"name": g, "share": float(w_.sum()),
+                           "median_ye_jpy": float(np.average([c_["median_ye_jpy"] for c_ in mem], weights=w_)),
+                           "p_up_ye": float(np.average([c_["p_up_ye"] for c_ in mem], weights=w_)),
+                           "range_ye_jpy": [float(min(c_["q10_ye_jpy"] for c_ in mem)), float(max(c_["q90_ye_jpy"] for c_ in mem))],
+                           "main": [" × ".join(x["outcome"] for x in c_["conditions"]) for c_ in sorted(mem, key=lambda x: -x["share"])[:3]]})
+    scenarios = {"events": [e_["name"] for e_ in tree_ev], "combos": combos[:27], "groups": groups,
+                 "note": "モデルA（イベント型モンテカルロ、%s本）の道筋を、年末に上がる確率を大きく変え、結果がまだ読めない3つのイベント（影響の幅×不確かさ）の結果の組み合わせで分けたもの。"
+                         "確率は各組み合わせが起きる割合、価格は年末（円）。他のイベントの結果は組み合わせの中で確率どおりに混ざっている。"
+                         "強気・基本・弱気は、組み合わせを年末の中央値の順に並べ、確率の累計の下位25%%・上位25%%で分けた" % format(nA, ",")}
+
     elapsed = time.time() - t0
     in_hash = hashlib.sha256(json.dumps([usd["price"], jpy["price"], vol["daily"], fed and fed["p_hike"], evdoc["updated_at"], ev_notes.get("ledger_updated_at"), ENGINE_VERSION, N], default=str).encode()).hexdigest()[:12]
     rec = {
         "run_id": run_id, "at": iso(now), "mode": a.mode, "engine_version": ENGINE_VERSION, "input_hash": in_hash,
-        "seed": seed, "paths": {"A": nA, "B": nB, "C": nC, "D": nD}, "weights": {k: W[k] / wsum for k in "ABCD"},
+        "seed": seed, "paths": {"A": nA, "B": nB, "C": nC, "D": nD, "T": nT}, "weights": {k: W[k] / wsum for k in MS},
         "spot": {"usd": s0u, "jpy": s0j, "usd_at": iso(usd["at"]), "jpy_at": iso(jpy["at"]), "usd_source": usd["source"], "jpy_source": jpy["source"]},
         "vol": {**vol, "base_sig_daily": base_sig, "event_var_daily": ev_var, "fx_daily": fxv, "target_daily": target, "iv30": iv30,
                 "basis": vol_basis},
         "event_sources": {"changes": ev_notes["changes"], "ledger_updated_at": ev_notes["ledger_updated_at"], "reaction_stats": ev_notes["stats"]},
-        "touch": touch, "bottom": bottom, "strategies": strat, "model_e": model_e, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
+        "touch": touch, "bottom": bottom, "strategies": strat, "model_e": model_e, "scenarios": scenarios,
+        "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": infoT}) if tech else None, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
         "fed": fed, "regime": reg, "forecasts": forecasts, "events": ev_out, "events_skipped": skipped,
         "backtest_c": bt, "elapsed_sec": round(elapsed, 1),
         "assumptions": ["予想の計算はこのプログラムで行い、AIは数字を作らない",
@@ -402,8 +485,9 @@ def main():
                    "usd_at": iso(usd["at"]), "jpy_at": iso(jpy["at"]), "usd_source": usd["source"], "jpy_source": jpy["source"],
                    "fx": fx0, "fx_source": fx["source"]},
         "fallbacks": fallbacks,
-        "forecast": {"items": [{k: v for k, v in f.items() if k != "models"} | {"p" + m: f["models"][m]["p_up_jpy"] for m in "ABCD"} for f in forecasts],
-        "touch": touch, "bottom": bottom, "iv": model_info["iv"], "strategies": strat,
+        "forecast": {"items": [{k: v for k, v in f.items() if k != "models"} | {"p" + m: f["models"][m]["p_up_jpy"] for m in f["models"]} for f in forecasts],
+        "touch": touch, "bottom": bottom, "iv": model_info["iv"], "strategies": strat, "scenarios": scenarios,
+                     "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": [{kk: vv for kk, vv in x.items()} for x in infoT]}) if tech else None,
                      "model_e": {"features": model_e.get("features"), "rule": model_e.get("rule"), "error": model_e.get("error"),
                                  "per_h": {k: {kk: vv for kk, vv in v.items() if kk != "walk_forward"} for k, v in (model_e.get("per_h") or {}).items()}},
                      "model_b": {"features": model_info["B"]["features"], "dates": infoB[1]["dates"] if len(infoB) > 1 else [], "k": infoB[0]["k"]},
