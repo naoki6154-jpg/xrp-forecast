@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "checked_at": "2026-11-07T21:46:43Z",
+  "checked_at": "2026-11-08T01:23:47Z",
   "last_date_jst": "",
-  "note": "請求データのエクスポートがまだ届いていない（設定直後は数時間〜1日かかる）：BigQuery error in query operation: Error processing job 'xrp- forecast:bqjob_r12d89be86a8ae259_000001a1b7fa6459_1': xrp-"
+  "note": "エクスポートの表はあるが、直近40日の行がない（データ待ち）"
 }
