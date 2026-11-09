@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 JST = timezone(timedelta(hours=9))
-SLOTS = ["07:40", "21:20"]
+SLOTS = ["00:10", "06:10", "12:10", "18:10"]
 
 
 def now():

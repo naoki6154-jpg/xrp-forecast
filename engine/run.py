@@ -24,6 +24,7 @@ import weekly as WK
 import model_e as ME
 import alerts as AL
 import technicals as TA
+import chartpat as CP
 import pandas as pd
 
 JST = I.JST
@@ -352,6 +353,11 @@ def main():
         model_e = ME.run(close, fgs, btc, pd.Timestamp(now.date()))
     except Exception as ex:
         model_e = {"error": str(ex)}
+    # チャート形状・フィボナッチ等（モデルP、参考表示・重み0。engine/chartpat.py）
+    try:
+        patterns = CP.analyze(ob, fx0)
+    except Exception as ex:
+        patterns = {"error": str(ex)}
     try:
         hmm = ME.regime_hmm(close)
     except Exception as ex:
@@ -457,7 +463,7 @@ def main():
                 "basis": vol_basis},
         "event_sources": {"changes": ev_notes["changes"], "ledger_updated_at": ev_notes["ledger_updated_at"], "reaction_stats": ev_notes["stats"]},
         "touch": touch, "bottom": bottom, "strategies": strat, "model_e": model_e, "scenarios": scenarios,
-        "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": infoT}) if tech else None, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
+        "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": infoT}) if tech else None, "patterns": patterns, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
         "fed": fed, "regime": reg, "forecasts": forecasts, "events": ev_out, "events_skipped": skipped,
         "backtest_c": bt, "elapsed_sec": round(elapsed, 1),
         "assumptions": ["予想の計算はこのプログラムで行い、AIは数字を作らない",
@@ -497,6 +503,7 @@ def main():
                                      "error": tech.get("error")}) if tech else None,
                      "model_e": {"features": model_e.get("features"), "rule": model_e.get("rule"), "error": model_e.get("error"),
                                  "per_h": {k: {kk: vv for kk, vv in v.items() if kk != "walk_forward"} for k, v in (model_e.get("per_h") or {}).items()}},
+                     "patterns": patterns,
                      "model_b": {"features": model_info["B"]["features"], "dates": infoB[1]["dates"] if len(infoB) > 1 else [], "k": infoB[0]["k"]},
                      "model_d": {"years": infoD[-1]["years"], "rule": model_info["D"]["rule"]},
                      "vol_annual": vol["annual"], "vol_basis": rec["vol"]["basis"], "weights": rec["weights"], "paths": rec["paths"],
