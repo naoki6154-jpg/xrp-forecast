@@ -107,3 +107,9 @@
 
 手順：`python3 engine/backtest.py` を実行し、reports/backtest.md・reports/backtest.json・engine/calibration.json を更新して `git add reports/ engine/calibration.json handoff.md` で保存する（push の前に pull）。
 重み（engine/config.json）は、reports/backtest.md と運用中の採点を見て提案だけ書く（報告に添える）。利用者の了承を得るまで config.json は変えない。handoff.md の末尾に1行追記する。
+
+## 価格だけの更新（2026-11-10、利用者の指示）
+
+ダッシュボードの「価格だけ更新」ボタン（config/priceRequest に依頼を書く）と、毎時20分の軽い定時作業が使う。予想は計算せず、forecasts/ も触らない。
+手順：①`git pull --rebase`　②`python3 engine/live_price.py` の出力（JSON）を、db_write の set で `config/livePrice` にそのまま書く（既存の文書なので、先に db_get で version を読み ifVersion に渡す）　③db_get で `config/priceRequest` を読み、status が requested なら、merge で `{"status":"done","done_at":"<今のJST>"}` を書く（ifVersion が必要）。
+値は保存済みの毎時取得（毎時5分）から読むだけ。画面は、予想の計算時点より新しいときだけこの値を現在値として表示する。取れない・古いときは出力の source と fallbacks に出る。
