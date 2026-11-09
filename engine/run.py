@@ -255,6 +255,13 @@ def main():
         if n:
             why.append("運用中：方向の当たり %.0f%%、80%%範囲 %.0f%%、ブライアスコア %.3f" % (live["dir"] * 100, live["in80"] * 100, live["brier"]))
         return d, r_, why, live
+    # チャート形状・フィボナッチ等（モデルP。engine/chartpat.py）。2026-11-10 利用者の指示で採用：
+    # 上がる確率（1日・1週間・1ヶ月）だけに、重み W["P"] の割合で混ぜる（価格の範囲・年末は変えない）。0にすれば参考表示に戻る
+    try:
+        patterns = CP.analyze(ob, fx0)
+    except Exception as ex:
+        patterns = {"error": str(ex)}
+    wP = float(W.get("P", 0) or 0); wP_share = wP / (sum(W[m_] for m_ in MS) + wP) if wP > 0 else 0.0
     forecasts = []
     for i, h in enumerate(hz):
         e = summarize(UE[:, i], JE[:, i], s0u, s0j)
@@ -275,10 +282,19 @@ def main():
         pc = calibrate(e["p_up_jpy"], h["id"])
         if pc is not None:
             lo = min(lo, pc - 0.03); hi = max(hi, pc + 0.03)
+        p_before_P = None; pP = None
+        if wP_share > 0 and isinstance(patterns, dict):
+            pP = ((patterns.get("composite") or {}).get(h["id"]) or {}).get("p")
+        if pP is not None:
+            p_before_P = pc if pc is not None else e["p_up_jpy"]
+            pc = (1 - wP_share) * p_before_P + wP_share * pP
+            lo = min(lo, pc - 0.03); hi = max(hi, pc + 0.03)
+            reasons.insert(0, "モデルP（チャート分析）を%.0f%%の重みで混ぜた（上がる確率のみ。混ぜる前 %.1f%% → %.1f%%）" % (wP_share * 100, p_before_P * 100, pc * 100))
         cdir, crng, cwhy, live = confidence(h["id"])
         reasons = cwhy + reasons
         forecasts.append({"id": h["id"], "label": h["label"], "target": h["target"], "steps": h["steps"],
                           "p_up_jpy": pc if pc is not None else e["p_up_jpy"], "p_up_raw_jpy": e["p_up_jpy"], "p_up_calibrated": pc is not None,
+                          "p_up_before_P": p_before_P, "model_p": pP, "model_p_share": wP_share if pP is not None else 0.0,
                           "p_up_usd": e["p_up_usd"], "p_band": [lo, hi], "confidence_range": crng, "score_live": live,
                           "q_jpy": e["q_jpy"], "q_usd": e["q_usd"],
                           "range50_jpy": [e["q_jpy"][1], e["q_jpy"][3]], "range80_jpy": [e["q_jpy"][0], e["q_jpy"][4]],
@@ -353,11 +369,6 @@ def main():
         model_e = ME.run(close, fgs, btc, pd.Timestamp(now.date()))
     except Exception as ex:
         model_e = {"error": str(ex)}
-    # チャート形状・フィボナッチ等（モデルP、参考表示・重み0。engine/chartpat.py）
-    try:
-        patterns = CP.analyze(ob, fx0)
-    except Exception as ex:
-        patterns = {"error": str(ex)}
     try:
         hmm = ME.regime_hmm(close)
     except Exception as ex:
@@ -457,7 +468,7 @@ def main():
     in_hash = hashlib.sha256(json.dumps([usd["price"], jpy["price"], vol["daily"], fed and fed["p_hike"], evdoc["updated_at"], ev_notes.get("ledger_updated_at"), ENGINE_VERSION, N], default=str).encode()).hexdigest()[:12]
     rec = {
         "run_id": run_id, "at": iso(now), "mode": a.mode, "engine_version": ENGINE_VERSION, "input_hash": in_hash,
-        "seed": seed, "paths": {"A": nA, "B": nB, "C": nC, "D": nD, "T": nT}, "weights": {k: W[k] / wsum for k in MS},
+        "seed": seed, "paths": {"A": nA, "B": nB, "C": nC, "D": nD, "T": nT}, "weights": {k: W[k] / wsum for k in MS} | ({"P(上がる確率のみ)": wP_share} if wP_share > 0 else {}),
         "spot": {"usd": s0u, "jpy": s0j, "usd_at": iso(usd["at"]), "jpy_at": iso(jpy["at"]), "usd_source": usd["source"], "jpy_source": jpy["source"]},
         "vol": {**vol, "base_sig_daily": base_sig, "event_var_daily": ev_var, "fx_daily": fxv, "target_daily": target, "iv30": iv30,
                 "basis": vol_basis},
