@@ -26,6 +26,9 @@
    の出力（JSONの配列）を、そのまま db_write の ops に渡す（slug は上記）。
 4. **①数値データ担当の点検**：`python3 engine/dash_ops.py numeric-check --run-id $RID --mode $MODE` の出力を db_write。
    （取得そのものは GitHub Actions と東京の Cloud Run が行う。ここでは保存済みデータの成否と新しさを数える）
+4b. **イベント結果の確認（毎回・全モード）**：ledger/calendar.csv で、前回の実行から今回までの間に発表時刻が過ぎたイベント（CPI・FOMC・雇用統計など）を探す。
+   ledger/results.csv に結果が入っていれば、手順5の engine/events_sync.py が自動で確定扱いにして再計算する（定時の4回が、そのまま「イベント後の更新」になる。発表の最長6時間後に反映）。
+   結果が入っていなければ、報告に「📰 イベント台帳に〇〇の結果の登録を頼む」と1行書く。予想は結果なしで出してよい。
 5. **予想エンジンを実行**：
    ```
    python3 engine/run.py --mode $MODE --run-id $RID
@@ -92,11 +95,13 @@
 
 ## イベント後の更新（1.2版から、設計書第12章）
 
-重要イベント（CPI・FOMC・雇用統計など）の15〜30分後に、予定のタスクが `MODE=manual` で上と同じ手順を実行する。
-始める前に ledger/results.csv に結果が入っているか確かめ、入っていなければ報告に「📰 イベント台帳に結果の登録を頼む」と書く（予想は結果なしで出してよい）。
-結果が入っていれば、engine/events_sync.py が自動でそのイベントを確定扱いにする。
+専用の予定は作らず、毎日4回の定時更新（00:10・06:10・12:10・18:10）の手順4bに組み込んでいる。発表の直後に反映したいときは、チャットで「再予想して」（MODE=manual）と頼む。
 
-## 月次の見直し（1.2版から、毎月1日、🔬 検証・改良の担当）
+## 月次の見直し（1.2版から、🔬 検証・改良の担当）
 
-`python3 engine/backtest.py` を実行し、reports/backtest.md・reports/backtest.json・engine/calibration.json を更新して保存する（engine/ の担当外の変更はしない）。
-重みの変更は reports/backtest.md と運用中の採点を見て提案し、利用者の了承を得てから engine/config.json を直す。
+専用の予定は作らず、**朝の定時更新（06:10）の手順10の後**に、次の条件がそろったときだけ行う。
+- 日本時間で毎月1日であること。
+- 試運転（2026-11-08〜11-14）が終わっていること（2026-11-15以降）。calibration.json が変わると予想の数字が変わるため、試運転中は行わない。
+
+手順：`python3 engine/backtest.py` を実行し、reports/backtest.md・reports/backtest.json・engine/calibration.json を更新して `git add reports/ engine/calibration.json handoff.md` で保存する（push の前に pull）。
+重み（engine/config.json）は、reports/backtest.md と運用中の採点を見て提案だけ書く（報告に添える）。利用者の了承を得るまで config.json は変えない。handoff.md の末尾に1行追記する。
