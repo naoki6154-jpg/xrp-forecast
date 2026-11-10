@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-11-09T23:38:49Z",
+  "updated_at": "2026-11-10T00:57:11Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得が稼働（毎時：Binance・Bybit〈東京経由〉・OKX、1日2回：全8取得先）。過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-09T23:38:49Z",
+      "fetched_at": "2026-11-10T00:57:11Z",
       "error": "",
-      "rows": 3235,
-      "added": 0,
-      "last": "2026-11-09",
+      "rows": 3236,
+      "added": 1,
+      "last": "2026-11-10",
       "note": "日足の区切りは bitbank の仕様に従う（タイムスタンプをUTC日付で記録）"
     },
     "kraken": {
@@ -42,11 +42,11 @@
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-09T23:38:49Z",
+      "fetched_at": "2026-11-10T00:57:10Z",
       "error": "",
-      "rows": 1304,
-      "added": 0,
-      "last": "2026-11-09",
+      "rows": 1306,
+      "added": 2,
+      "last": "2026-11-10",
       "note": ""
     },
     "fred": {
@@ -69,11 +69,11 @@
     },
     "jp_relay": {
       "ok": true,
-      "fetched_at": "2026-11-09T23:38:47Z",
+      "fetched_at": "2026-11-10T00:57:07Z",
       "error": "",
-      "rows": 2196,
-      "added": 20,
-      "last": "2026-11-09",
+      "rows": 2220,
+      "added": 24,
+      "last": "2026-11-10",
       "note": "全項目取得"
     },
     "binance_vision_1h": {
@@ -131,5 +131,5 @@
       "note": "追跡アドレス 7件、その残高の合計 69,150,577 XRP（エスクローはアドレス未確認のため未取得）"
     }
   },
-  "last_fetch_run": "2026-11-09T23:38:44Z"
+  "last_fetch_run": "2026-11-10T00:57:05Z"
 }
