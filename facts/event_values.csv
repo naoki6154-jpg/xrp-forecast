@@ -515,6 +515,10 @@ cpi-2026-10-14,CPI 前年比,3.74,3.40,3.6,0.1,%,CPIAUCNS の 2026-10-14 時点�
 cpi-2026-10-14,CPI 前月比,0.65,0.40,,,%,CPIAUCSL の 2026-10-14 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
 cpi-2026-10-14,コアCPI 前年比,2.56,2.45,2.5,0.1,%,CPILFENS の 2026-10-14 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）／予想：https://forexfundamentals.com/economic-calendar/us-core-cpi/2026-10-14（2026-11-07取得、二次情報）
 cpi-2026-10-14,コアCPI 前月比,0.33,0.29,,,%,CPILFESL の 2026-10-14 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+cpi-2026-11-10,CPI 前年比,,3.74,,,%,CPIAUCNS の 2026-11-10 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+cpi-2026-11-10,CPI 前月比,0.35,0.65,,,%,CPIAUCSL の 2026-11-10 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+cpi-2026-11-10,コアCPI 前年比,,2.56,,,%,CPILFENS の 2026-11-10 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+cpi-2026-11-10,コアCPI 前月比,0.30,0.33,,,%,CPILFESL の 2026-11-10 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
 fomc-2016-01-27,変更幅,0,,,,bp,上限の差,FRED DFEDTARU
 fomc-2016-01-27,誘導目標 上限,0.50,0.50,,,%,会合開始の前日と、終了の3日後の値,FRED DFEDTARU
 fomc-2016-01-27,誘導目標 下限,0.25,0.25,,,%,会合開始の前日と、終了の3日後の値,FRED DFEDTARL
