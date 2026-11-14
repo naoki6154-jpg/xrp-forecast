@@ -1,6 +1,6 @@
 {
  "ledger/events": {
-  "at": "2026-11-08T06:42:58+09:00",
+  "at": "2026-11-14T23:54:52+09:00",
   "by": "📰 イベント台帳チャット",
   "reference_only": true,
   "note": "参考表示：試運転（11/8〜11/14）が終わるまで予想の計算には使っていません。＊は判断で置いた確率（理由は ledger/calendar.json）。",
@@ -464,14 +464,44 @@
     "outcome": "強い",
     "xrp_1h": -0.261,
     "xrp_4h": -0.303,
+    "xrp_1d": -1.934,
+    "btc_1d": -0.136,
+    "source": "FRED/ALFRED PAYEMS（BLSの初回発表値）"
+   },
+   {
+    "name": "米CPI（10月分）",
+    "at": "2026-11-10T22:30:00+09:00",
+    "metric": "コアCPI 前月比",
+    "actual": "0.3",
+    "consensus": "0.2",
+    "surprise": "0.1",
+    "unit": "%",
+    "outcome": "上振れ",
+    "xrp_1h": -1.288,
+    "xrp_4h": -2.418,
+    "xrp_1d": -1.686,
+    "btc_1d": -0.798,
+    "source": "FRED/ALFRED CPILFESL（11/10時点の公表値から計算：0.30%）。報道もコア+0.3%"
+   },
+   {
+    "name": "米PPI（10月分）",
+    "at": "2026-11-13T22:30:00+09:00",
+    "metric": "PPI 前月比",
+    "actual": "0.3",
+    "consensus": "0.3",
+    "surprise": "0",
+    "unit": "%",
+    "outcome": "予想通り",
+    "xrp_1h": 1.402,
+    "xrp_4h": 0.088,
     "xrp_1d": null,
     "btc_1d": null,
-    "source": "FRED/ALFRED PAYEMS（BLSの初回発表値）"
+    "source": "BLS PPI 10月分の報道（ロイター・Babypips・stocktitan。公式ページとの照合は未実施）"
    }
   ]
  },
  "ledger/news": {
-  "at": "2026-11-08T06:42:58+09:00",
+  "at": "2026-11-14T23:54:52+09:00",
   "by": "📰 イベント台帳チャット",
   "reference_only": true,
   "items": [
