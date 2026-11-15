@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import time
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
@@ -49,7 +50,8 @@ def s3_list(prefix, delimiter="/"):
     """S3 の一覧（1000件ずつ）。CommonPrefixes と Key を返す"""
     prefixes, keys, marker = [], [], ""
     while True:
-        url = f"{S3}?delimiter={delimiter}&prefix={prefix}" + (f"&marker={marker}" if marker else "")
+        url = (f"{S3}?delimiter={urllib.parse.quote(delimiter)}&prefix={urllib.parse.quote(prefix)}"
+               + (f"&marker={urllib.parse.quote(marker)}" if marker else ""))
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=60) as r:
             xml = r.read().decode("utf-8")
@@ -110,7 +112,8 @@ def save_month_rows(rows):
 
 
 def fetch_month(sym, ym, fetched_at):
-    blob = http_get(f"{VISION}/monthly/klines/{sym}/1d/{sym}-1d-{ym}.zip", as_json=False, retries=2)
+    q = urllib.parse.quote(sym)  # 漢字などの名前の銘柄があるため
+    blob = http_get(f"{VISION}/monthly/klines/{q}/1d/{q}-1d-{ym}.zip", as_json=False, retries=2)
     rows = []
     for r in csv.reader(io.StringIO(unzip_single_csv(blob))):
         if r and r[0].isdigit():
@@ -128,7 +131,7 @@ def backfill(symbols, t0):
         listings = dict(zip(symbols, ex.map(lambda s: s3_list(f"data/spot/monthly/klines/{s}/1d/", "")[1], symbols)))
     for s, keys in listings.items():
         for k in keys:
-            m = re.search(rf"{s}-1d-(\d{{4}}-\d{{2}})\.zip$", k)
+            m = re.search(rf"{re.escape(s)}-1d-(\d{{4}}-\d{{2}})\.zip$", urllib.parse.unquote(k))
             if m and m.group(1) >= "2017-10" and (s, m.group(1)) not in done:
                 todo.append((s, m.group(1)))
     fetched_at = now_utc_iso()
@@ -175,7 +178,7 @@ def recent(fetched_at, universe):
     now = datetime.now(timezone.utc)
 
     def one(s):
-        k = http_get(f"{LIVE}/klines?symbol={s}&interval=1d&limit=60", retries=2)
+        k = http_get(f"{LIVE}/klines?symbol={urllib.parse.quote(s)}&interval=1d&limit=60", retries=2)
         rows = []
         for r in k:
             end = datetime.fromtimestamp(int(r[0]) / 1000, tz=timezone.utc) + timedelta(days=1)
