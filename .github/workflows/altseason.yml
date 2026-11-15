@@ -1,0 +1,43 @@
+# 参考表示（設計書 追補 第18章 ③）：アルトコイン季節指数（自前計算）。毎日 09:40 JST。
+# 段階1の定時更新とは別のワークフロー・別の列。失敗しても段階1の取得は止まらない。
+# 初回は過去分（数百銘柄の月次ファイル）の取り込みに時間がかかるため、40分で区切り、続きは次の回に取る。
+name: altseason
+
+on:
+  schedule:
+    - cron: "40 0 * * *"   # 09:40 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: altseason
+  cancel-in-progress: false
+
+jobs:
+  altseason:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pandas
+      - name: 取得と計算
+        run: python3 fetchers/altseason.py
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/universe data/raw/sentiment/altseason.csv data/raw/sentiment/altseason_status.json data/clean/altseason_members_latest.csv 2>/dev/null || true
+          git add data/raw/universe data/raw/sentiment
+          [ -f data/clean/altseason_members_latest.csv ] && git add data/clean/altseason_members_latest.csv
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "data: 参考表示（アルトコイン季節指数） $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
