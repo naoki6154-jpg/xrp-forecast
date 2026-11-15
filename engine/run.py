@@ -25,10 +25,11 @@ import model_e as ME
 import alerts as AL
 import technicals as TA
 import chartpat as CP
+import refflow as RF
 import pandas as pd
 
 JST = I.JST
-ENGINE_VERSION = "1.3.0"
+ENGINE_VERSION = "1.4.0"
 Q = (10, 25, 50, 75, 90)
 
 
@@ -261,6 +262,10 @@ def main():
         patterns = CP.analyze(ob, fx0)
     except Exception as ex:
         patterns = {"error": str(ex)}
+    try:
+        ref_flow = RF.analyze()
+    except Exception as ex:
+        ref_flow = {"error": str(ex)}
     wP = float(W.get("P", 0) or 0); wP_share = wP / (sum(W[m_] for m_ in MS) + wP) if wP > 0 else 0.0
     forecasts = []
     for i, h in enumerate(hz):
@@ -474,7 +479,7 @@ def main():
                 "basis": vol_basis},
         "event_sources": {"changes": ev_notes["changes"], "ledger_updated_at": ev_notes["ledger_updated_at"], "reaction_stats": ev_notes["stats"]},
         "touch": touch, "bottom": bottom, "strategies": strat, "model_e": model_e, "scenarios": scenarios,
-        "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": infoT}) if tech else None, "patterns": patterns, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
+        "technicals": ({k: v for k, v in tech.items() if k != "states"} | {"model_t": infoT}) if tech else None, "patterns": patterns, "ref_flow": ref_flow, "regime_hmm": hmm, "indicators": ind, "model_info": model_info,
         "fed": fed, "regime": reg, "forecasts": forecasts, "events": ev_out, "events_skipped": skipped,
         "backtest_c": bt, "elapsed_sec": round(elapsed, 1),
         "assumptions": ["予想の計算はこのプログラムで行い、AIは数字を作らない",
@@ -515,6 +520,7 @@ def main():
                      "model_e": {"features": model_e.get("features"), "rule": model_e.get("rule"), "error": model_e.get("error"),
                                  "per_h": {k: {kk: vv for kk, vv in v.items() if kk != "walk_forward"} for k, v in (model_e.get("per_h") or {}).items()}},
                      "patterns": patterns,
+                     "ref_flow": ref_flow,
                      "model_b": {"features": model_info["B"]["features"], "dates": infoB[1]["dates"] if len(infoB) > 1 else [], "k": infoB[0]["k"]},
                      "model_d": {"years": infoD[-1]["years"], "rule": model_info["D"]["rule"]},
                      "vol_annual": vol["annual"], "vol_basis": rec["vol"]["basis"], "weights": rec["weights"], "paths": rec["paths"],
