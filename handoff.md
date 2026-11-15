@@ -77,3 +77,4 @@
 - 2026-11-15 18:41 JST［🔬 ③検証（週次の振り返り）］reports/weekly/ に今週の振り返りを保存。要対応 2件
 - 2026-11-15 21:30 司令塔: 設計書追補 第18章(テイカー売買比率・大口偏り・季節指数・月別騰落率、すべて参考表示)を作成し、🗄️🔬への依頼文を出した。ダッシュボードconfig/watchにplanned(準備中)を追加。Binance日足CSVに成行買い出来高の列は無い(取得修正が必要)
 - 2026-11-15 21:40 司令塔: engineを1.4.0に更新(engine/refflow.py。テイカー売買比率・季節指数・月別騰落率を参考表示で追加。確率・範囲は不変)。試運転は数え直さず続行(合格判定11/22ごろ、🔬で影響なしを確認)。🗄️へ取得依頼文を作成
+- 2026-11-15 21:49 JST［🗄️ データ基盤］司令塔の依頼（追補18章）：①テイカー売買比率を取得開始。新しいワークフロー refflow（毎時35分、段階1とは別の列。state/latest.json は書かない）。data/raw/flows/binance_taker_xrp_1d.csv（2018-05-04〜、3,118行）・binance_taker_btc_1d.csv（2018-01-01〜、3,241行）、列 date, volume, taker_buy_volume, taker_ratio, partial, source, fetched_at。過去分は data.binance.vision の日足、当日・直近分は data-api.binance.vision（公開データ専用、認証不要、米国からも可）。既存の日足と出来高は全日一致、日付の欠けなし。状況は data/raw/flows/refflow_status.json。config/watch の planned.taker を「取得中」に更新。③季節指数：既製の指数の過去分は無料・キーなしでは取れない（docs/altseason.md）。altseason.csv は未作成で、自前計算するかを利用者に確認中。②大口約定は未着手（見積もりは利用者に報告）。
