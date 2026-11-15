@@ -31,9 +31,8 @@ jobs:
         run: |
           git config user.name "xrp-forecast-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/raw/universe data/raw/sentiment/altseason.csv data/raw/sentiment/altseason_status.json data/clean/altseason_members_latest.csv 2>/dev/null || true
           git add data/raw/universe data/raw/sentiment
-          [ -f data/clean/altseason_members_latest.csv ] && git add data/clean/altseason_members_latest.csv
+          if [ -f data/clean/altseason_members_latest.csv ]; then git add data/clean/altseason_members_latest.csv; fi
           if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
           git commit -q -m "data: 参考表示（アルトコイン季節指数） $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
           for i in 1 2 3; do
