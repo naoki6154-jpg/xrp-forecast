@@ -1,0 +1,37 @@
+# 参考表示（設計書 追補 第18章）用の取得：テイカー売買比率。毎時35分。
+# 段階1の定時更新（fetch-hourly・fetch-daily）とは別のワークフロー・別の列。失敗しても段階1の取得は止まらない。
+# 書き込むのは data/raw/flows/binance_taker_*.csv と refflow_status.json だけ（state/latest.json は書かない）。
+name: refflow
+
+on:
+  schedule:
+    - cron: "35 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refflow
+  cancel-in-progress: false
+
+jobs:
+  refflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: 取得（テイカー売買比率）
+        run: python3 fetchers/refflow.py
+      - name: 保存（コミット）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/flows/binance_taker_*.csv data/raw/flows/refflow_status.json
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "data: 参考表示（テイカー売買比率） $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
