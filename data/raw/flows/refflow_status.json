@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-16T21:18:58Z",
+  "checked_at": "2026-11-16T22:17:17Z",
   "taker": {
     "XRP": {
       "ok": true,
@@ -8,7 +8,7 @@
       "first": "2018-05-04",
       "last": "2026-11-16",
       "last_partial": "1",
-      "last_taker_ratio": "0.450998",
+      "last_taker_ratio": "0.455536",
       "blank_ratio_rows": 0,
       "note": ""
     },
@@ -19,7 +19,7 @@
       "first": "2018-01-01",
       "last": "2026-11-16",
       "last_partial": "1",
-      "last_taker_ratio": "0.514476",
+      "last_taker_ratio": "0.515868",
       "blank_ratio_rows": 0,
       "note": ""
     }
