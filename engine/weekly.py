@@ -14,7 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 JST = timezone(timedelta(hours=9))
 REPO = "naoki6154-jpg/xrp-forecast"
-SLOTS = [("morning", 7, 40), ("night", 21, 20)]
+SLOTS = [("night", 0, 10), ("morning", 6, 10), ("night", 12, 10), ("night", 18, 10)]  # 2026-11-17 修正：実際の定時（00:10・06:10・12:10・18:10）に合わせた。旧値07:40・21:20のままで「動かなかった」と誤判定していた
 TRIAL_START = datetime(2026, 11, 9, 7, 40, tzinfo=JST)   # 試運転の数え始め（予想エンジン1.1に切り替えた次の朝。11/8の2回は1.0版）。これより前の枠は数えない
 # まだ取れていない欄（段階1の時点）。取れるようになったら消す
 NOT_YET = ["FedWatch（CME）", "経済指標の市場予想", "ニュース（②情報・イベント担当は段階2）", "Mac（補助）の取得", "運用中の予想の本格的な採点（③は段階3）"]
@@ -146,13 +146,23 @@ def data_gaps(records, start, end):
 
 def actions_minutes(start, end):
     try:
-        out = subprocess.run(["gh", "api", "--paginate", "repos/%s/actions/runs?per_page=100&created=>=%s" % (REPO, start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")),
-                              "--jq", ".workflow_runs[] | [.name, .conclusion, .run_started_at, .updated_at] | @tsv"],
-                             capture_output=True, text=True, timeout=120)
+        # --paginate は次ページのURLが repositories/{id}/... になり、プロキシ経由で403になる（2026-11-17）。ページ番号で自前に回す
+        since = start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        lines, out = [], None
+        for pg in range(1, 21):
+            out = subprocess.run(["gh", "api", "repos/%s/actions/runs?per_page=100&page=%d&created=>=%s" % (REPO, pg, since),
+                                  "--jq", ".workflow_runs[] | [.name, .conclusion, .run_started_at, .updated_at] | @tsv"],
+                                 capture_output=True, text=True, timeout=120)
+            if out.returncode != 0:
+                break
+            got = [x for x in out.stdout.strip().splitlines() if x]
+            lines += got
+            if len(got) < 100:
+                break
         if out.returncode != 0:
             return {"ok": False, "error": out.stderr.strip()[:200]}
         tot, n, fail, canc, by = 0.0, 0, 0, 0, {}
-        for line in out.stdout.strip().splitlines():
+        for line in lines:
             name, concl, a, b = (line.split("\t") + ["", "", "", ""])[:4]
             if not a or not b:
                 continue
