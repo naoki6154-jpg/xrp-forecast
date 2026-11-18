@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-18T15:57:56Z",
+  "updated_at": "2026-11-18T17:01:52Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得が稼働（毎時：Binance・Bybit〈東京経由〉・OKX、1日2回：全8取得先）。過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-18T15:57:56Z",
+      "fetched_at": "2026-11-18T17:01:52Z",
       "error": "",
       "rows": 3244,
       "added": 0,
@@ -42,10 +42,10 @@
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-18T15:57:56Z",
+      "fetched_at": "2026-11-18T17:01:51Z",
       "error": "",
-      "rows": 1388,
-      "added": 0,
+      "rows": 1394,
+      "added": 6,
       "last": "2026-11-18",
       "note": ""
     },
@@ -69,10 +69,10 @@
     },
     "jp_relay": {
       "ok": true,
-      "fetched_at": "2026-11-18T15:57:54Z",
+      "fetched_at": "2026-11-18T17:01:49Z",
       "error": "",
-      "rows": 6420,
-      "added": 20,
+      "rows": 6452,
+      "added": 32,
       "last": "2026-11-18",
       "note": "全項目取得"
     },
@@ -131,5 +131,5 @@
       "note": "追跡アドレス 8件、その残高の合計 62 XRP（エスクローはアドレス未確認のため未取得）"
     }
   },
-  "last_fetch_run": "2026-11-18T15:57:51Z"
+  "last_fetch_run": "2026-11-18T17:01:46Z"
 }
