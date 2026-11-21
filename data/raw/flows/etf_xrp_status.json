@@ -1,0 +1,5 @@
+{
+  "checked_at": "2026-11-21T10:02:40Z",
+  "ok": false,
+  "note": "SoSoValue の APIキーが未設定（GitHub の Secrets に SOSOVALUE_API_KEY を登録すると取得が始まる）"
+}
