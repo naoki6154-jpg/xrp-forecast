@@ -1,5 +1,18 @@
 {
-  "checked_at": "2026-11-21T10:49:45Z",
-  "ok": false,
-  "note": "SoSoValue の APIキーが未設定（GitHub の Secrets に SOSOVALUE_API_KEY を登録すると取得が始まる）"
+  "checked_at": "2026-11-21T10:50:59Z",
+  "ok": true,
+  "rows": 22,
+  "added": 22,
+  "last": "2026-11-20",
+  "tickers": [
+    "GXRP",
+    "TOXR",
+    "XRP",
+    "XRPC",
+    "XRPZ"
+  ],
+  "ticker_note": "API の一覧",
+  "ticker_errors": [],
+  "first_in_this_fetch": "2026-10-22",
+  "last_total_usd_m": "-4.9686"
 }
