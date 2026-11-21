@@ -1,0 +1,55 @@
+# 米国上場の現物XRP ETFの日次の資金の流れ（SoSoValue API）。毎日 08:30・20:30 JST。
+# 段階1の定時更新とは別のワークフロー・別の列。失敗しても段階1の取得は止まらない。
+# state/latest.json は、毎時の取得とぶつからないよう「最新を取り込んで1項目だけ書き足す」形で更新する。
+name: etf-xrp
+
+on:
+  schedule:
+    - cron: "30 23 * * *"   # 08:30 JST
+    - cron: "30 11 * * *"   # 20:30 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: etf-xrp
+  cancel-in-progress: false
+
+jobs:
+  etf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: 取得
+        env:
+          SOSOVALUE_API_KEY: ${{ secrets.SOSOVALUE_API_KEY }}
+        run: python3 fetchers/etf_xrp.py
+      - name: 保存（データ）
+        run: |
+          git config user.name "xrp-forecast-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/flows/etf_xrp_status.json
+          for f in data/raw/flows/etf_flows_xrp.csv data/raw/flows/etf_xrp_sosovalue_raw.csv; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -q -m "data: XRP現物ETFの資金の流れ $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
+      - name: 保存（state/latest.json の点検項目）
+        run: |
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python3 fetchers/state_update.py etf_flows_xrp data/raw/flows/etf_xrp_status.json
+            git add state/latest.json
+            if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+            git commit -q -m "state: XRP現物ETFの取得状況"
+            git push -q origin HEAD:main && exit 0
+            sleep 7
+          done
+          exit 1
