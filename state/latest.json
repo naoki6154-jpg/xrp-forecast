@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-21T10:03:02Z",
+  "updated_at": "2026-11-21T10:47:02Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得が稼働（毎時：Binance・Bybit〈東京経由〉・OKX、1日2回：全8取得先）。過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-21T10:02:24Z",
+      "fetched_at": "2026-11-21T10:47:02Z",
       "error": "",
       "rows": 3247,
       "added": 0,
@@ -42,7 +42,7 @@
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-21T10:02:39Z",
+      "fetched_at": "2026-11-21T10:47:01Z",
       "error": "",
       "rows": 1418,
       "added": 0,
@@ -69,10 +69,10 @@
     },
     "jp_relay": {
       "ok": true,
-      "fetched_at": "2026-11-21T10:02:51Z",
+      "fetched_at": "2026-11-21T10:46:59Z",
       "error": "",
-      "rows": 7771,
-      "added": 19,
+      "rows": 7780,
+      "added": 9,
       "last": "2026-11-21",
       "note": "全項目取得"
     },
@@ -140,5 +140,5 @@
       "note": "SoSoValue の APIキーが未設定（GitHub の Secrets に SOSOVALUE_API_KEY を登録すると取得が始まる）"
     }
   },
-  "last_fetch_run": "2026-11-21T10:02:23Z"
+  "last_fetch_run": "2026-11-21T10:46:56Z"
 }
