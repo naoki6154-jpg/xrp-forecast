@@ -1,25 +1,25 @@
 {
-  "checked_at": "2026-11-21T00:15:48Z",
+  "checked_at": "2026-11-21T01:44:47Z",
   "taker": {
     "XRP": {
       "ok": true,
       "rows": 3124,
-      "added": 1,
+      "added": 0,
       "first": "2018-05-04",
       "last": "2026-11-21",
       "last_partial": "1",
-      "last_taker_ratio": "0.699065",
+      "last_taker_ratio": "0.551633",
       "blank_ratio_rows": 0,
       "note": ""
     },
     "BTC": {
       "ok": true,
       "rows": 3247,
-      "added": 1,
+      "added": 0,
       "first": "2018-01-01",
       "last": "2026-11-21",
       "last_partial": "1",
-      "last_taker_ratio": "0.273795",
+      "last_taker_ratio": "0.385194",
       "blank_ratio_rows": 0,
       "note": ""
     }
