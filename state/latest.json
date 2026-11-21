@@ -131,13 +131,13 @@
       "note": "追跡アドレス 8件、その残高の合計 62 XRP（エスクローはアドレス未確認のため未取得）"
     },
     "etf_flows_xrp": {
-      "ok": false,
-      "fetched_at": "2026-11-21T10:49:45Z",
-      "rows": "",
-      "added": "",
-      "last": "",
-      "error": "SoSoValue の APIキーが未設定（GitHub の Secrets に SOSOVALUE_API_KEY を登録すると取得が始まる）",
-      "note": "SoSoValue の APIキーが未設定（GitHub の Secrets に SOSOVALUE_API_KEY を登録すると取得が始まる）"
+      "ok": true,
+      "fetched_at": "2026-11-21T10:50:59Z",
+      "rows": 22,
+      "added": 22,
+      "last": "2026-11-20",
+      "error": "",
+      "note": "API の一覧"
     }
   },
   "last_fetch_run": "2026-11-21T10:46:56Z"
