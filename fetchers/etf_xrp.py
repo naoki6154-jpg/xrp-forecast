@@ -74,7 +74,21 @@ def main():
         return 0
     try:
         # 合計
-        summ = api("/etfs/summary-history", {"symbol": "XRP", "country_code": "US", "limit": 300})
+        summ = list(api("/etfs/summary-history", {"symbol": "XRP", "country_code": "US", "limit": 300}))
+        if os.environ.get("BACKFILL") == "1":
+            # 遡り取得の試し：月ごとの期間指定（仕様上は直近1か月のみ。取れた分だけ使う）
+            import datetime as _dt
+            d0 = _dt.date(2025, 11, 1)
+            while d0 < _dt.date.today() - _dt.timedelta(days=31):
+                d1 = min(d0 + _dt.timedelta(days=29), _dt.date.today())
+                try:
+                    got = api("/etfs/summary-history", {"symbol": "XRP", "country_code": "US", "limit": 300,
+                                                        "start_date": d0.isoformat(), "end_date": d1.isoformat()})
+                    print(f"[遡り] {d0}〜{d1}: {len(got)}行")
+                    summ += list(got)
+                except Exception as e:  # noqa: BLE001
+                    print(f"[遡り] {d0}〜{d1}: 失敗 {str(e)[:150]}")
+                d0 = d1 + _dt.timedelta(days=1)
         totals = {}
         for x in summ:
             if _num(x.get("total_net_inflow")) is None:

@@ -8,6 +8,10 @@ on:
     - cron: "30 23 * * *"   # 08:30 JST
     - cron: "30 11 * * *"   # 20:30 JST
   workflow_dispatch:
+    inputs:
+      backfill:
+        description: "1 にすると過去分の遡り取得を試す"
+        default: "0"
 
 permissions:
   contents: write
@@ -25,6 +29,7 @@ jobs:
       - name: 取得
         env:
           SOSOVALUE_API_KEY: ${{ secrets.SOSOVALUE_API_KEY }}
+          BACKFILL: ${{ github.event.inputs.backfill || '0' }}
         run: python3 fetchers/etf_xrp.py
       - name: 保存（データ）
         run: |
