@@ -1,21 +1,21 @@
 {
-  "checked_at": "2026-11-20T01:50:27Z",
+  "checked_at": "2026-11-22T01:49:54Z",
   "symbols_in_universe": 700,
   "months_todo_at_start": 0,
   "backfill_stopped_by_time": false,
-  "recent_symbols": 502,
+  "recent_symbols": 503,
   "ok": true,
-  "rows": 3247,
+  "rows": 3249,
   "first_valued": "2019-04-18",
   "last": {
-    "date": "2026-11-19",
-    "value": "44.0",
+    "date": "2026-11-21",
+    "value": "40.0",
     "n_coins": 50,
-    "n_beat": 22,
-    "btc_ret_90d_pct": "-20.87",
+    "n_beat": 20,
+    "btc_ret_90d_pct": "-22.54",
     "source": "自前計算（Binance USDT現物の売買代金上位50、90日騰落率がBTCを上回った割合。docs/altseason.md）",
-    "fetched_at": "2026-11-20T01:50:27Z"
+    "fetched_at": "2026-11-22T01:49:54Z"
   },
   "note": "",
-  "seconds": 92
+  "seconds": 102
 }
