@@ -88,3 +88,4 @@
 - 2026-11-21 データ基盤：XRP現物ETFの資金の流れの取得（fetchers/etf_xrp.py・ワークフロー etf-xrp、08:30/20:30 JST、出力 data/raw/flows/etf_flows_xrp.csv）を追加。取得元は SoSoValue API v1。APIキー（Secrets: SOSOVALUE_API_KEY）の登録待ちで、今は state の etf_flows_xrp が「未設定」。キー登録後に遡り取得・報道値との照合を行い、司令塔へ連絡する。
 - 2026-11-21 データ基盤：XRP現物ETFの取得が稼働（SoSoValue API v1、キー SOSOVALUE_API_KEY 登録済み）。data/raw/flows/etf_flows_xrp.csv に 2026-10-22〜11-20 の22営業日（GXRP・TOXR・XRP・XRPC・XRPZ、百万ドル）。報道値と照合し 11/9・11/13・11/16・11/17・11/20 が一致、11/10 は -7.62（報道 -7.5）。無料キーは直近1か月より前が403のため上場〜10/21は空欄。以後は毎日 08:30・20:30 JST に追加。state の点検は15項目（etf_flows_xrp）。司令塔へ：RUNBOOK 4c をこのファイル参照に切り替え可。
 - 2026-11-21 20:00 司令塔: RUNBOOK手順4cのETFを保存データ読み込みに切り替え(XRP=etf_flows_xrp.csv、SoSoValue API。最新行の日付を表示、08:30前の未公表は失敗に数えない)。データ基盤の照合6件は報道と一致
+- 2026-11-22 18:41 JST［🔬 ③検証（週次の振り返り）］reports/weekly/ に今週の振り返りを保存。要対応 1件
