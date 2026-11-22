@@ -92,3 +92,9 @@ snapshot_date,expiry,days_to_expiry,underlying,atm_strike,atm_mark_iv_pct,n_opti
 2026-11-21,2026-12-04,12.38,0.92705,0.92,81.24,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-21T22:47:46Z
 2026-11-21,2026-12-25,33.38,0.92928,0.95,76.80,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-21T22:47:46Z
 2026-11-21,2027-03-26,124.38,0.93341,0.95,71.99,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-21T22:47:46Z
+2026-11-22,2026-11-23,0.88,0.93014,0.94,74.23,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
+2026-11-22,2026-11-24,1.88,0.93015,0.94,82.66,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
+2026-11-22,2026-11-27,4.88,0.93061,0.94,78.83,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
+2026-11-22,2026-12-04,11.88,0.93179,0.94,79.15,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
+2026-11-22,2026-12-25,32.88,0.9345,0.95,75.28,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
+2026-11-22,2027-03-26,123.88,0.93711,0.95,69.89,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-22T10:56:35Z
