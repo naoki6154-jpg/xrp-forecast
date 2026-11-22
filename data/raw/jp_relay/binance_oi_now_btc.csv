@@ -369,3 +369,4 @@ time,api_symbol,openInterest,api_time,symbol,source,fetched_at
 2026-11-22T14:49:05Z,BTCUSDT,94001.239,1795358938329,BTC,https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT（東京のCloud Run経由）,2026-11-22T14:49:05.068528Z
 2026-11-22T15:43:39Z,BTCUSDT,94030.331,1795362217828,BTC,https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT（東京のCloud Run経由）,2026-11-22T15:43:39.207850Z
 2026-11-22T16:44:11Z,BTCUSDT,94147.317,1795365843115,BTC,https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT（東京のCloud Run経由）,2026-11-22T16:44:11.193303Z
+2026-11-22T17:41:44Z,BTCUSDT,93633.181,1795369300412,BTC,https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT（東京のCloud Run経由）,2026-11-22T17:41:44.976198Z
