@@ -1,9 +1,9 @@
 {
-  "checked_at": "2026-11-24T00:15:38Z",
+  "checked_at": "2026-11-24T12:29:54Z",
   "ok": true,
-  "rows": 22,
-  "added": 0,
-  "last": "2026-11-20",
+  "rows": 23,
+  "added": 1,
+  "last": "2026-11-23",
   "tickers": [
     "GXRP",
     "TOXR",
@@ -14,5 +14,5 @@
   "ticker_note": "API の一覧",
   "ticker_errors": [],
   "first_in_this_fetch": "2026-10-26",
-  "last_total_usd_m": "-4.9686"
+  "last_total_usd_m": "-2.4899"
 }
