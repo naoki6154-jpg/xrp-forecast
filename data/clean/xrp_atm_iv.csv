@@ -110,8 +110,8 @@ snapshot_date,expiry,days_to_expiry,underlying,atm_strike,atm_mark_iv_pct,n_opti
 2026-11-24,2026-12-04,9.37,0.92589,0.92,75.03,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-24T23:02:50Z
 2026-11-24,2026-12-25,30.37,0.9277,0.95,76.20,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-24T23:02:50Z
 2026-11-24,2027-03-26,121.37,0.93001,0.95,78.57,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-24T23:02:50Z
-2026-11-25,2026-11-26,0.87,0.91123,0.92,79.76,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T11:09:50Z
-2026-11-25,2026-11-27,1.87,0.91127,0.92,78.86,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T11:09:50Z
-2026-11-25,2026-12-04,8.87,0.91198,0.92,75.35,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T11:09:50Z
-2026-11-25,2026-12-25,29.87,0.91253,0.9,74.98,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T11:09:50Z
-2026-11-25,2027-03-26,120.87,0.91575,0.9,73.83,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T11:09:50Z
+2026-11-25,2026-11-26,0.37,0.9336,0.94,70.60,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T23:01:35Z
+2026-11-25,2026-11-27,1.37,0.93378,0.94,76.43,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T23:01:35Z
+2026-11-25,2026-12-04,8.37,0.93469,0.94,76.39,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T23:01:35Z
+2026-11-25,2026-12-25,29.37,0.93655,0.95,76.18,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T23:01:35Z
+2026-11-25,2027-03-26,120.37,0.94548,0.95,75.92,2,行使価格が原資産価格に最も近いコール・プットの mark_iv の平均,data/raw/deribit/xrp_options_snapshot.csv から計算,2026-11-25T23:01:35Z
