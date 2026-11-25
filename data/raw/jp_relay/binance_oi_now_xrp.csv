@@ -422,3 +422,4 @@ time,api_symbol,openInterest,api_time,symbol,source,fetched_at
 2026-11-25T02:54:57Z,XRPUSDT,278060817.2,1795575294208,XRP,https://fapi.binance.com/fapi/v1/openInterest?symbol=XRPUSDT（東京のCloud Run経由）,2026-11-25T02:54:57.172919Z
 2026-11-25T04:00:23Z,XRPUSDT,278309199.3,1795579214253,XRP,https://fapi.binance.com/fapi/v1/openInterest?symbol=XRPUSDT（東京のCloud Run経由）,2026-11-25T04:00:23.273365Z
 2026-11-25T05:07:09Z,XRPUSDT,279046918.2,1795583221077,XRP,https://fapi.binance.com/fapi/v1/openInterest?symbol=XRPUSDT（東京のCloud Run経由）,2026-11-25T05:07:09.186224Z
+2026-11-25T07:16:31Z,XRPUSDT,279125374.0,1795590984166,XRP,https://fapi.binance.com/fapi/v1/openInterest?symbol=XRPUSDT（東京のCloud Run経由）,2026-11-25T07:16:31.444482Z
