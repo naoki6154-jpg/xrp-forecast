@@ -132,10 +132,10 @@
     },
     "etf_flows_xrp": {
       "ok": true,
-      "fetched_at": "2026-11-25T00:13:03Z",
-      "rows": 23,
-      "added": 0,
-      "last": "2026-11-23",
+      "fetched_at": "2026-11-25T12:34:10Z",
+      "rows": 24,
+      "added": 1,
+      "last": "2026-11-24",
       "error": "",
       "note": "API の一覧"
     }
