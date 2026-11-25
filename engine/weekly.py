@@ -99,6 +99,102 @@ def score(records, prices, now, start):
     return {"week": agg(week), "all": agg(rows), "by_horizon_all": by_h, "price_source": prices.src}
 
 
+def _jpy_at(records, t, tol_min=45):
+    """目標時刻に最も近い予想記録の円価格（bitbank・当日途中値）。45分以内。1時間足の円価格がリポジトリにないための代用"""
+    best = None
+    for r in records:
+        d = abs((datetime.fromisoformat(r["at"]) - t).total_seconds()) / 60
+        if d <= tol_min and (best is None or d < best[0]):
+            best = (d, r["spot"]["jpy"])
+    return best[1] if best else None
+
+
+def score_extra(records, prices, now):
+    """2026-11-25 🔬検証・改良の提案（利用者の了承済み）。score() の数字（補正前・ドル）は変えず、追加で出す。定時（朝・夜）の回だけ。
+    ・画面に出る確率（p_up_jpy＝補正後＋モデルP）を、円の結果で採点する
+    ・直前の傾向を使う基準（過去30日の上昇日の割合／過去60日の7日騰落が上昇だった割合）。「常に50%」より厳しい基準
+    ・実質の件数（1日後＝目標日の数、1週間後＝予想を作った期間÷7）と、ブライア−0.25 の95%区間（同じ日・同じ週をまとめて補正）
+    ・下落レジームで80%範囲が下に外れた割合（範囲の監視）
+    失敗しても週次の振り返り本体は止めない（error を返す）。"""
+    try:
+        import numpy as np
+        sched = [r for r in records if r["mode"] in ("morning", "night")]
+        d1 = read_csv("data/raw/prices/binance_xrp_usdt_1d.csv")
+        dates = [r["date"][:10] for r in d1]
+        lc = np.log([float(r["close"]) for r in d1])
+
+        def trail(at, h):
+            d = (at.astimezone(timezone.utc) - timedelta(days=1)).date().isoformat()
+            k = max(i for i, x in enumerate(dates) if x <= d)
+            if h == "1d":
+                w = lc[k - 29:k + 1] - lc[k - 30:k]
+                return float((w > 0).mean())
+            w = np.array([lc[j] - lc[j - 7] for j in range(k - 59, k + 1)])
+            return float((w > 0).mean())
+
+        def boot(a, blk, B=2000):
+            a = np.asarray(a, float); n = len(a)
+            if n < 2 * blk:
+                return None
+            rng = np.random.default_rng(20261125); out = []
+            for _ in range(B):
+                st = rng.integers(0, n, size=int(np.ceil(n / blk)))
+                out.append(a[np.concatenate([(np.arange(x, x + blk)) % n for x in st])[:n]].mean())
+            return [float(np.percentile(out, 2.5)), float(np.percentile(out, 97.5))]
+
+        res = {}
+        for h, blk in (("1d", 4), ("1w", 28)):
+            rows = []
+            for r in sched:
+                at = datetime.fromisoformat(r["at"])
+                for f in r["forecasts"]:
+                    if f["id"] != h:
+                        continue
+                    tg = datetime.fromisoformat(f["target"])
+                    if tg > now:
+                        continue
+                    px = prices.at(tg)
+                    if px is None:
+                        continue
+                    s0 = r["spot"]["usd"]; up = 1.0 if px > s0 else 0.0
+                    jT = _jpy_at(records, tg); j0 = r["spot"]["jpy"]
+                    upj = None if jT is None else (1.0 if jT > j0 else 0.0)
+                    try:
+                        pt = trail(at, h)
+                    except Exception:
+                        pt = None
+                    rows.append({"at": at, "tg": tg, "up": up, "upj": upj, "p_raw": f["p_up_usd"], "p_disp": f["p_up_jpy"], "p_trail": pt,
+                                 "lo": px < f["q_usd"][0], "hi": px > f["q_usd"][4], "reg": (r.get("regime") or {}).get("state")})
+            rows.sort(key=lambda x: x["at"])
+
+            def units(rs):
+                if not rs:
+                    return 0.0
+                if h == "1d":
+                    return float(len({x["tg"].astimezone(JST).date() for x in rs}))
+                return round((max(x["at"] for x in rs) - min(x["at"] for x in rs)).total_seconds() / 86400 / 7, 2)
+            o = {"n": len(rows), "units": units(rows), "units_basis": "目標日の数" if h == "1d" else "予想を作った期間÷7日（重ならない週の数）",
+                 "reference_only": units(rows) < 20}
+            if rows:
+                dr = [(x["p_raw"] - x["up"]) ** 2 - 0.25 for x in rows]
+                o["raw"] = {"brier": float(np.mean(dr)) + 0.25, "diff": float(np.mean(dr)), "ci95": boot(dr, blk)}
+                rj = [x for x in rows if x["upj"] is not None]
+                if rj:
+                    dj = [(x["p_disp"] - x["upj"]) ** 2 - 0.25 for x in rj]
+                    o["disp_jpy"] = {"n": len(rj), "brier": float(np.mean(dj)) + 0.25, "diff": float(np.mean(dj)), "ci95": boot(dj, blk),
+                                     "p_mean": float(np.mean([x["p_disp"] for x in rj])), "up_rate": float(np.mean([x["upj"] for x in rj]))}
+                rt = [x for x in rows if x["p_trail"] is not None]
+                if rt:
+                    o["trail_base"] = {"n": len(rt), "brier": float(np.mean([(x["p_trail"] - x["up"]) ** 2 for x in rt])), "p_mean": float(np.mean([x["p_trail"] for x in rt]))}
+                dn = [x for x in rows if x["reg"] == "下落"]
+                o["down"] = {"n": len(dn), "units": units(dn), "lo": (float(np.mean([x["lo"] for x in dn])) if dn else None),
+                             "hi": (float(np.mean([x["hi"] for x in dn])) if dn else None)}
+            res[h] = o
+        return {"by_h": res, "scope": "定時（朝・夜）の回のみ", "basis": "ブライア−0.25 の95%区間は、1日後は1日（4回）、1週間後は7日（28回）をひとまとまりにしたブロックブートストラップ。直前の傾向の基準は予想時点で分かる情報だけ"}
+    except Exception as ex:
+        return {"error": str(ex)[:200]}
+
+
 def slots(start, end):
     out = []
     d = start.date()
@@ -306,7 +402,10 @@ def main():
     iso = now.isocalendar()
     wid = "%d-W%02d" % (iso[0], iso[1])
     recs = load_records()
-    sc = score(recs, Prices(), now, start)
+    PR = Prices()
+    sc = score(recs, PR, now, start)
+    sx = score_extra(recs, PR, now)
+    sc["extra"] = sx
     ops = operations(recs, start, now)
     gaps = data_gaps(recs, start, now)
     act = actions_minutes(start, now)
@@ -315,6 +414,13 @@ def main():
     ch = changes(recs, start, now)
     nw = next_week(recs, now)
     imp = improvements(sc, ops, gaps, recs, act)
+    # 範囲の監視（2026-11-25 提案4）：下落レジームで1週間後の80%範囲が下に外れた割合が10%を超えたら拾う。過去（2020〜）の平均は約8%、急落の年（2022・2026）は12%台
+    try:
+        dn = ((sx.get("by_h") or {}).get("1w") or {}).get("down") or {}
+        if dn.get("n", 0) >= 8 and dn.get("lo") is not None and dn["lo"] > 0.10:
+            imp.append("下落レジームで1週間後の80%%範囲が下に外れた割合が%.0f%%（目安10%%、%d件・実質%.1f週%s）。レジーム別の補正は過去に根拠なし。急落の年の傾向として監視（実施は🔬検証・改良チャットで確かめてから）" % (dn["lo"] * 100, dn["n"], dn["units"], "・参考値" if dn["units"] < 20 else ""))
+    except Exception:
+        pass
 
     # ---------- 問題の判定（決まった規則だけ） ----------
     issues = []  # (内容, 頼むチャット, 頼み方)
@@ -349,6 +455,22 @@ def main():
     for nm, x in (("今週期限", w), ("これまで全部", al)):
         M.append("| %s | %d | %s | %s | %s | %s |" % (nm, x.get("n", 0), pc(x.get("dir")), pc(x.get("in50")), pc(x.get("in80")), "—" if not x.get("n") else "%.3f" % x["brier"]))
     M += ["", "件数が20件未満は参考値。実際の価格：%s。" % sc["price_source"], ""]
+    # 追加の採点（2026-11-25 🔬検証・改良の提案1〜4）
+    if isinstance(sx, dict) and sx.get("by_h"):
+        def f2(v): return "—" if v is None else "%.4f" % v
+        def ci(c): return "" if not c else "（%+.3f〜%+.3f）" % (c[0], c[1])
+        b1, b2 = sx["by_h"]["1d"], sx["by_h"]["1w"]
+        def cell(b, k):
+            x = b.get(k)
+            return "—" if not x else "%+.4f%s" % (x["diff"], ci(x["ci95"]) if x["ci95"] else "（区間は件数不足）")
+        M += ["### 追加の採点（定時の朝・夜のみ。🔬検証・改良 2026-11-25）", "",
+              "| 項目 | 1日後 | 1週間後 |", "| --- | --- | --- |",
+              "| 件数（実質の単位） | %d件（%.0f日） | %d件（%.1f週） |" % (b1["n"], b1["units"], b2["n"], b2["units"]),
+              "| 補正前の確率（ドルの結果）ブライア−0.25（95%区間） | " + cell(b1, "raw") + " | " + cell(b2, "raw") + " |",
+              "| 画面の確率（補正後・円の結果）ブライア−0.25（95%区間） | " + cell(b1, "disp_jpy") + " | " + cell(b2, "disp_jpy") + " |",
+              "| 直前の傾向を使う基準のブライア（「常に50%」は0.25） | " + f2((b1.get("trail_base") or {}).get("brier")) + " | " + f2((b2.get("trail_base") or {}).get("brier")) + " |",
+              "| 下落レジームの80%%範囲の下外れ（件数） | %s（%d件） | %s（%d件） |" % (pc((b1.get("down") or {}).get("lo")), (b1.get("down") or {}).get("n", 0), pc((b2.get("down") or {}).get("lo")), (b2.get("down") or {}).get("n", 0)), "",
+              "実質の単位が20未満は参考値。差の95%区間が0をまたぐ間は、基準との差は判定できない（設計書 追補 第19章）。一方向の相場では、低め（または高め）の一定の確率が有利になるだけで、力の証拠にはならない。", ""]
     M += ["## 稼働", "", "- 定時更新：%d／%d回成功（%s）" % (ops["done"], ops["planned"], ops["basis"])] + (["- 動かなかった回：" + "、".join(ops["missed"])] if ops["missed"] else []) + [""]
     M += ["## データの欠け", "", "| 取得先 | 実行回数 | 成功 | 成功率 |", "| --- | --- | --- | --- |"] + ["| %s | %d | %d | %s |" % (s["source"], s["runs"], s["ok"], pc(s["rate"])) for s in gaps["fetch"]]
     M += ["", "- 代わりの取得先を使った回数（予想%d回中）：円価格 %d回・ドル価格 %d回" % (gaps["fallback"]["records"], gaps["fallback"]["XRP円価格"], gaps["fallback"]["XRPドル価格"]),
@@ -373,7 +495,7 @@ def main():
         if isinstance(o, list): return [r5(v) for v in o]
         return o
     doc = r5({"week": wid, "at": now.isoformat(), "period": rep["period"], "issues": rep["issues"],
-              "score": {"week": w, "all": al}, "operations": {k: ops[k] for k in ("planned", "done", "missed")},
+              "score": {"week": w, "all": al}, "score_extra": sx, "operations": {k: ops[k] for k in ("planned", "done", "missed")},
               "data": {"fetch": [{k: s[k] for k in ("source", "runs", "ok", "rate")} for s in gaps["fetch"]], "fallback": gaps["fallback"], "blank_items": gaps["blank_items"]},
               "cost": {"gcp": gcp.get("week") if gcp["ok"] else None, "gcp_month": gcp.get("month"), "gcp_currency": gcp.get("currency"), "gcp_note": gcp["note"], "actions_minutes": act.get("minutes"), "actions_runs": act.get("runs"), "actions_failed": act.get("failed_runs"), "actions_cancelled": act.get("cancelled_runs"), "private": act.get("private")},
               "changes": ch, "next_week": nw, "improvements": imp, "keys": keys.get("items", []), "file": "reports/weekly/%s.md" % wid})

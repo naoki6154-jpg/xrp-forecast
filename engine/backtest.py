@@ -73,6 +73,11 @@ def main():
     for h in HS:
         g = df[(df.h == h) & (df.m == "E")]
         x = np.log(np.clip(g.p_up, 0.01, 0.99) / (1 - np.clip(g.p_up, 0.01, 0.99))).values.reshape(-1, 1)
+        if h == "1d":
+            # 2026-11-25 🔬検証・改良の提案5：1日後は傾き b を当てはめず 0 にする（予想が高いほど補正後が低い逆向きの傾きが出ていたため）。切片＝過去の上昇率のロジット
+            u_ = float(g.up.mean())
+            cal[h] = {"a": float(math.log(u_ / (1 - u_))), "b": 0.0, "n": int(len(g)), "up_rate": u_}
+            continue
         lr_ = LogisticRegression(C=1.0).fit(x, g.up.values)
         cal[h] = {"a": float(lr_.intercept_[0]), "b": float(lr_.coef_[0][0]), "n": int(len(g)), "up_rate": float(g.up.mean())}
     out["platt"] = cal
