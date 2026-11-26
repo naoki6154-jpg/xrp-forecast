@@ -1555,3 +1555,7 @@ pce-2026-10-29,PCE 前年比,3.65,3.44,,,%,PCEPI の 2026-10-29 時点の公表�
 pce-2026-10-29,PCE 前月比,0.49,0.32,,,%,PCEPI の 2026-10-29 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
 pce-2026-10-29,コアPCE 前年比,3.12,3.03,,,%,PCEPILFE の 2026-10-29 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
 pce-2026-10-29,コアPCE 前月比,0.32,0.26,,,%,PCEPILFE の 2026-10-29 時点の公表値（ALFRED）から計算。対象月 2026-09。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+pce-2026-11-25,PCE 前年比,3.84,3.67,,,%,PCEPI の 2026-11-25 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+pce-2026-11-25,PCE 前月比,0.32,0.50,,,%,PCEPI の 2026-11-25 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+pce-2026-11-25,コアPCE 前年比,3.26,3.14,,,%,PCEPILFE の 2026-11-25 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
+pce-2026-11-25,コアPCE 前月比,0.29,0.32,,,%,PCEPILFE の 2026-11-25 時点の公表値（ALFRED）から計算。対象月 2026-10。公表値は指数の丸めにより0.1ポイント違うことがある,FRED/ALFRED API series/observations（realtime_start=realtime_end=発表日）
