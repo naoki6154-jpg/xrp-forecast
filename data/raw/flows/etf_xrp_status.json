@@ -1,7 +1,7 @@
 {
-  "checked_at": "2026-11-25T12:34:10Z",
+  "checked_at": "2026-11-26T00:16:39Z",
   "ok": true,
-  "rows": 24,
+  "rows": 25,
   "added": 1,
   "last": "2026-11-24",
   "tickers": [
@@ -13,6 +13,6 @@
   ],
   "ticker_note": "API の一覧",
   "ticker_errors": [],
-  "first_in_this_fetch": "2026-10-26",
-  "last_total_usd_m": "0.0000"
+  "first_in_this_fetch": "2026-10-27",
+  "last_total_usd_m": ""
 }
