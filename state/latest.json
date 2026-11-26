@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-26T02:53:51Z",
+  "updated_at": "2026-11-26T03:58:14Z",
   "stage": "0",
   "status": "段階0の構築中：一次データの定時取得が稼働（毎時：Binance・Bybit〈東京経由〉・OKX、1日2回：全8取得先）。過去事実データベースは未着手",
   "data": {},
   "sources": {
     "bitbank": {
       "ok": true,
-      "fetched_at": "2026-11-26T02:53:51Z",
+      "fetched_at": "2026-11-26T03:58:14Z",
       "error": "",
       "rows": 3252,
       "added": 0,
@@ -42,7 +42,7 @@
     },
     "okx": {
       "ok": true,
-      "fetched_at": "2026-11-26T02:53:51Z",
+      "fetched_at": "2026-11-26T03:58:13Z",
       "error": "",
       "rows": 1466,
       "added": 0,
@@ -69,9 +69,9 @@
     },
     "jp_relay": {
       "ok": true,
-      "fetched_at": "2026-11-26T02:53:48Z",
+      "fetched_at": "2026-11-26T03:58:11Z",
       "error": "",
-      "rows": 10004,
+      "rows": 10024,
       "added": 20,
       "last": "2026-11-26",
       "note": "全項目取得"
@@ -140,5 +140,5 @@
       "note": "API の一覧"
     }
   },
-  "last_fetch_run": "2026-11-26T02:53:45Z"
+  "last_fetch_run": "2026-11-26T03:58:09Z"
 }
