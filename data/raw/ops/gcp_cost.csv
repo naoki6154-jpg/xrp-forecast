@@ -1,94 +1,99 @@
 date_jst,service,currency,cost,credits_promotion,credits_other,net,source,fetched_at
-2026-11-07,Cloud Storage,JPY,5.7E-5,0.0,0.0,0.000057,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-08,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-08,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-08,Cloud Run,JPY,0.452824,0.0,-0.380806,0.072018,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-08,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-09,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-09,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-09,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-09,Cloud Run,JPY,0.438562,0.0,-0.372371,0.066191,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-09,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-10,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-10,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-10,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-10,Cloud Run,JPY,0.504578,0.0,-0.435478,0.069100,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-10,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-11,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-11,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-11,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-11,Cloud Run,JPY,0.483513,0.0,-0.41437,0.069143,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-11,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-12,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-12,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-12,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-12,Cloud Run,JPY,0.451096,0.0,-0.387783,0.063313,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-12,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-13,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-13,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-13,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-13,Cloud Run,JPY,0.497253,0.0,-0.428127,0.069126,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-13,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-14,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-14,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-14,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-14,Cloud Run,JPY,0.529179,0.0,-0.454267,0.074912,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-14,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-15,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-15,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-15,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-15,Cloud Run,JPY,0.565401,0.0,-0.481851,0.083550,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-15,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-16,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-16,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-16,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-16,Cloud Run,JPY,0.346967,0.0,-0.295888,0.051079,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-16,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-17,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-17,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-17,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-17,Cloud Run,JPY,0.526611,0.0,-0.462527,0.064084,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-17,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-18,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-18,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-18,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-18,Cloud Run,JPY,0.47141,0.0,-0.405214,0.066196,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-18,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-19,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-19,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-19,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-19,Cloud Run,JPY,0.476928,0.0,-0.410701,0.066227,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-19,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-20,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-20,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-20,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-20,Cloud Run,JPY,0.479737,0.0,-0.413522,0.066215,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-20,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-21,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-21,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-21,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-21,Cloud Run,JPY,0.516219,0.0,-0.441297,0.074922,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-21,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-22,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-22,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-22,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-22,Cloud Run,JPY,0.500652,0.0,-0.431537,0.069115,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-22,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-23,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-23,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-23,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-23,Cloud Run,JPY,0.376884,0.0,-0.32213,0.054754,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-23,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-24,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-24,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-24,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-24,Cloud Run,JPY,0.484634,0.0,-0.418389,0.066245,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-24,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-25,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-25,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-25,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-25,Cloud Run,JPY,0.407666,0.0,-0.352903,0.054763,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-25,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-26,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-26,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
-2026-11-26,Cloud Run,JPY,0.107621,0.0,-0.095303,0.012318,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-26T01:36:11Z
+2026-11-07,Cloud Storage,JPY,5.7E-5,0.0,0.0,0.000057,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-08,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-08,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-08,Cloud Run,JPY,0.452824,0.0,-0.380806,0.072018,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-08,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-09,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-09,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-09,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-09,Cloud Run,JPY,0.438562,0.0,-0.372371,0.066191,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-09,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-10,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-10,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-10,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-10,Cloud Run,JPY,0.504578,0.0,-0.435478,0.069100,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-10,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-11,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-11,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-11,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-11,Cloud Run,JPY,0.483513,0.0,-0.41437,0.069143,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-11,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-12,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-12,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-12,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-12,Cloud Run,JPY,0.451096,0.0,-0.387783,0.063313,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-12,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-13,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-13,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-13,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-13,Cloud Run,JPY,0.497253,0.0,-0.428127,0.069126,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-13,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-14,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-14,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-14,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-14,Cloud Run,JPY,0.529179,0.0,-0.454267,0.074912,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-14,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-15,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-15,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-15,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-15,Cloud Run,JPY,0.565401,0.0,-0.481851,0.083550,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-15,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-16,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-16,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-16,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-16,Cloud Run,JPY,0.346967,0.0,-0.295888,0.051079,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-16,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-17,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-17,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-17,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-17,Cloud Run,JPY,0.526611,0.0,-0.462527,0.064084,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-17,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-18,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-18,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-18,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-18,Cloud Run,JPY,0.47141,0.0,-0.405214,0.066196,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-18,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-19,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-19,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-19,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-19,Cloud Run,JPY,0.476928,0.0,-0.410701,0.066227,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-19,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-20,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-20,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-20,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-20,Cloud Run,JPY,0.479737,0.0,-0.413522,0.066215,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-20,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-21,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-21,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-21,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-21,Cloud Run,JPY,0.516219,0.0,-0.441297,0.074922,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-21,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-22,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-22,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-22,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-22,Cloud Run,JPY,0.500652,0.0,-0.431537,0.069115,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-22,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-23,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-23,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-23,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-23,Cloud Run,JPY,0.376884,0.0,-0.32213,0.054754,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-23,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-24,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-24,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-24,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-24,Cloud Run,JPY,0.484634,0.0,-0.418389,0.066245,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-24,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-25,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-25,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-25,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-25,Cloud Run,JPY,0.407666,0.0,-0.352903,0.054763,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-25,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-26,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-26,BigQuery,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-26,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-26,Cloud Run,JPY,0.446204,0.0,-0.386445,0.059759,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-26,Cloud Storage,JPY,1.0E-6,0.0,0.0,0.000001,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-27,Artifact Registry,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-27,Cloud Logging,JPY,0.0,0.0,0.0,0.000000,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
+2026-11-27,Cloud Run,JPY,0.070426,0.0,-0.061027,0.009399,Google Cloud 請求データの BigQuery エクスポート（標準の使用料金） xrp-forecast.billing_export,2026-11-27T01:38:42Z
